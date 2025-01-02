@@ -35,7 +35,7 @@
 
 ### **1. Clone Repository**
 ```bash
-git clone https://github.com/al-kawsar/sampahbijak.git
+git clone https://github.com/al-kawsar/sampah-bijak.git
 cd sampah-bijak
 ```
 

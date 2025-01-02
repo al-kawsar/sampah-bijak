@@ -4,6 +4,19 @@ import { ZiggyVue } from "ziggy-js";
 import { Link, Head } from "@inertiajs/vue3";
 import "ant-design-vue/dist/reset.css";
 
+// Register service worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('Service Worker registered');
+            })
+            .catch(error => {
+                console.log('Service Worker registration failed:', error);
+            });
+    });
+}
+
 createInertiaApp({
     progress: {
         delay: 250,
