@@ -3,6 +3,7 @@ import Components from "unplugin-vue-components/vite";
 import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
+import { VitePWA } from 'vite-plugin-pwa';
 import path from "path";
 
 export default defineConfig({
@@ -15,7 +16,7 @@ export default defineConfig({
             ],
         }),
         laravel({
-            input: ["resources/css/app.css", "resources/js/app.js"],
+            input: ["resources/js/app.js"],
             refresh: true,
         }),
         vue({
@@ -25,6 +26,33 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
+        }),
+        VitePWA({
+            registerType: 'autoUpdate',
+            manifest: {
+                name: 'Sampah Bijak',
+                short_name: 'App',
+                theme_color: '#ffffff',
+                icons: [
+                    {
+                        src: '/images/192.png',
+                        sizes: '192x192',
+                        type: 'image/png'
+                    },
+                    {
+                        src: '/images/512.png',
+                        sizes: '512x512',
+                        type: 'image/png'
+                    }
+                ],
+                start_url: '/',
+                display: 'standalone',
+                background_color: '#ffffff'
+            },
+            workbox: {
+                navigateFallback: '/',
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}']
+            }
         }),
     ],
     resolve: {
