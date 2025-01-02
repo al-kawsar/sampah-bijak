@@ -2,24 +2,6 @@
 
 **Sistem Digital Pengelolaan Sampah Terintegrasi untuk Mendukung Ekonomi Sirkular dan Lingkungan Sehat**
 
----
-
-## **Deskripsi Proyek**
-"Sampah Bijak" adalah sebuah web aplikasi yang dirancang untuk menyelesaikan permasalahan pengelolaan sampah di Indonesia. Platform ini mengintegrasikan berbagai pihak seperti rumah tangga, pemerintah daerah, industri daur ulang, dan komunitas. Dengan menggunakan teknologi digital, aplikasi ini bertujuan untuk:
-
-- **Mengedukasi** masyarakat tentang pengelolaan sampah yang baik.
-- **Memantau** alur pengelolaan sampah dari hulu ke hilir.
-- **Mengelola** sampah secara efektif guna mendukung ekonomi sirkular dan menciptakan lingkungan yang lebih sehat.
-
----
-
-## **Fitur Utama**
-- **Tracking Sampah**: Memungkinkan pengguna untuk memantau sampah dari sumber hingga proses akhir.
-- **Edukasi dan Pelatihan**: Program edukasi tentang pentingnya pengelolaan sampah yang bertanggung jawab.
-- **Analitik dan Laporan**: Laporan statistik pengelolaan sampah untuk membantu pengambilan keputusan.
-
----
-
 ## **Tech Stack**
 
 | **Komponen**   | **Teknologi**        |
