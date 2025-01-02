@@ -1,15 +1,15 @@
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { ZiggyVue } from "ziggy-js";
-import 'ant-design-vue/dist/reset.css';
+import { Link, Head } from "@inertiajs/vue3";
+import "ant-design-vue/dist/reset.css";
 
 createInertiaApp({
     progress: {
         delay: 250,
         color: "#29d",
-
-       includeCSS: true,
-        showSpinner: false,
+        includeCSS: true,
+        showSpinner: true,
     },
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
@@ -19,6 +19,8 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .component("Link", Link)
+            .component("Head", Head)
             .mount(el);
     },
 });
