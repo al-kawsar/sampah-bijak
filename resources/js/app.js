@@ -1,20 +1,14 @@
-import "./bootstrap";
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { ZiggyVue } from "ziggy-js";
+import 'ant-design-vue/dist/reset.css';
 
 createInertiaApp({
     progress: {
-        // The delay after which the progress bar will appear, in milliseconds...
         delay: 250,
-
-        // The color of the progress bar...
         color: "#29d",
 
-        // Whether to include the default NProgress styles...
-        includeCSS: true,
-
-        // Whether the NProgress spinner will be shown...
+       includeCSS: true,
         showSpinner: false,
     },
     resolve: (name) => {
