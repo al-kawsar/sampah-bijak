@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Http\Actions\Utility\GetSidebarMenu;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -35,15 +36,16 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $sidebarMenus = (new GetSidebarMenu())->handle();
         return array_merge(parent::share($request), [
             "app_name" => config("app.name"),
             "user" => fn() => $request->user()
-                ? $request->user()->only("id", "name", "email")
+                ? $request->user()->only("id", "username", "email")
                 : null,
-            // "role" => fn() => $request->user()
-            //     ? $request->user()->role->name
-            //     : null,
-
+            "role" => fn() => $request->user()
+                ? $request->user()->role->name
+                : null,
+            'sidebar_menus' => $sidebarMenus
         ]);
     }
 }
