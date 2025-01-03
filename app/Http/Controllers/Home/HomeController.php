@@ -11,8 +11,8 @@ class HomeController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function index(Request $request)
+    public function index()
     {
-        return Inertia::render('Home/Home');
+        return Inertia::render('Home/Index');
     }
 }
