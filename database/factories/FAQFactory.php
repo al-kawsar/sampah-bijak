@@ -17,7 +17,9 @@ class FAQFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'question' => $this->faker->sentence,
+            'answer' => $this->faker->paragraph,
+            'order_number' => $this->faker->unique()->numberBetween(1, 100),
         ];
     }
 }
