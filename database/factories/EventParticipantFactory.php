@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Event;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EventParticipant>
@@ -16,8 +19,12 @@ class EventParticipantFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            //
+            'user_id' => User::inRandomOrder()->first()->id,
+            'event_id' => Event::inRandomOrder()->first()->id,
+            'status' => $this->faker->randomElement(['registered', 'attended', 'cancelled']),
+            'registered_at' => $this->faker->dateTime,
         ];
     }
 }
