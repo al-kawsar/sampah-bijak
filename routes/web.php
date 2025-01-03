@@ -10,7 +10,7 @@ Route::name('home.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
 });
 
-Route::name('auth.')->prefix('auth')->group(function () {
+Route::name('auth.')->prefix('auth')->middleware('guest')->group(function () {
     Route::controller(LoginController::class)->group(function () {
         Route::get('/login', 'showLoginForm')->name('login.index');
         Route::post('/login', 'doLogin')->name('login.submit');
