@@ -21,9 +21,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             HandleInertiaRequests::class,
         ]);
-        // $middleware->alias([
-        //     'role' => checkRole::class,
-        // ]);
+
+        $middleware->alias([
+            // 'role' => checkRole::class,
+            'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
+        ]);
+
         $middleware->redirectGuestsTo(function (Request $request) {
             return route('auth.login.index');
         });
