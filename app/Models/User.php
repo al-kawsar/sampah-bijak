@@ -12,37 +12,51 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+
+     public $incrementing = false; // Disable auto increment
+    protected $keyType = 'string';
+
     protected $fillable = [
-        'name',
+        'id',
+        'username',
         'email',
         'password',
+        'region_id',
+        'role_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+
+
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (!$model->getKey()) {
+                // Generate UUID v4 for the ID if it's not set
+                $model->id = (string) str()->uuid(); // Use uuid4 for unique ID
+            }
+        });
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class, 'region_id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
     }
 }
