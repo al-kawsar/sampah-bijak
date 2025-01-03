@@ -17,7 +17,11 @@ class LearningModuleFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'id' => $this->faker->uuid,
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+            'content' => $this->faker->text,
+            'thumbnail' => $this->faker->imageUrl(),
         ];
     }
 }
