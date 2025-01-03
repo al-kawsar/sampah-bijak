@@ -17,7 +17,12 @@ class HomepageSliderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+            'image' => $this->faker->imageUrl(),
+            'link' => $this->faker->url,
+            'order_number' => $this->faker->numberBetween(1, 10),
+            'is_active' => $this->faker->boolean,
         ];
     }
 }
