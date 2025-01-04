@@ -13,7 +13,20 @@ class Event extends Model
     public $incrementing = false; // Disable auto increment
     protected $keyType = 'string';
 
+    protected $fillable = [
+        'id', 
+        'title', 
+        'description', 
+        'date', 
+        'location', 
+        'organizer_id', 
+        'image', 
+        'max_participants'
+    ];
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
     protected static function boot()
     {
         parent::boot();
@@ -24,5 +37,10 @@ class Event extends Model
                 $model->id = (string) str()->uuid(); // Use uuid4 for unique ID
             }
         });
+    }
+
+    public function organizer()
+    {
+        return $this->belongsTo(User::class, 'organizer_id');
     }
 }
