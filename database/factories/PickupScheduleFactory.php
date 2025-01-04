@@ -17,7 +17,11 @@ class PickupScheduleFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(),
+            'pickup_date' => $this->faker->date,
+            'pickup_time' => $this->faker->time,
+            'notes' => $this->faker->sentence,
+            'status' => $this->faker->randomElement(['pending', 'confirmed', 'completed', 'cancelled']),
         ];
     }
 }
