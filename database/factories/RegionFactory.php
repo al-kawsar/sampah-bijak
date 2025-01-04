@@ -17,7 +17,7 @@ class RegionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'region_name' => $this->faker->city,
         ];
     }
 }
