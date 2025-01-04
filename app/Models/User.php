@@ -13,7 +13,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
 
-     public $incrementing = false; // Disable auto increment
+    public $incrementing = false; // Disable auto increment
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -59,4 +59,5 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
 }
