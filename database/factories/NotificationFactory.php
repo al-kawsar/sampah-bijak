@@ -17,7 +17,11 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::inRandomOrder()->first()->id,
+            'title' => $this->faker->sentence,
+            'message' => $this->faker->text,
+            'type' => $this->faker->word,
+            'is_read' => $this->faker->boolean,
         ];
     }
 }
