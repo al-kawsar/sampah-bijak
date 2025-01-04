@@ -9,4 +9,13 @@ class FAQ extends Model
 {
     /** @use HasFactory<\Database\Factories\FAQFactory> */
     use HasFactory;
+    protected $fillable = [
+        'question',
+        'answer',
+        'order_number',
+    ];
+
+    protected $casts = [
+        'order_number' => 'integer',
+    ];
 }
