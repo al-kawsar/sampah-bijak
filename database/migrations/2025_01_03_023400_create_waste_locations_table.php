@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('waste_locations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['TPS']);
+            $table->enum('type', ['TPS', 'TPA', 'Bank Sampah', 'Pusat Daur Ulang', 'Tempat Pengolahan Sampah Organik', 'Tempat Pembuangan Limbah Berbahaya']);
             $table->text('address');
             $table->decimal('latitude', 10, 8);
             $table->decimal('longitude', 11, 8);
