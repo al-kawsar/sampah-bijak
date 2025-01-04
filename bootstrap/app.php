@@ -27,6 +27,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
         ]);
 
+        $middleware->validateCsrfTokens(except: [
+            'asanjay/*',
+        ]);
+
         $middleware->redirectGuestsTo(function (Request $request) {
             return route('auth.login.index');
         });
