@@ -9,4 +9,31 @@ class EventParticipant extends Model
 {
     /** @use HasFactory<\Database\Factories\EventParticipantFactory> */
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'event_id',
+        'status',
+        'registered_at'
+    ];
+
+    // Casting untuk kolom date atau timestamp jika diperlukan
+    protected $casts = [
+        'registered_at' => 'datetime',
+    ];
+
+    /**
+     * Relasi ke model User
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relasi ke model Event
+     */
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }
