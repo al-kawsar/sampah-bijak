@@ -9,4 +9,9 @@ class WasteCategory extends Model
 {
     /** @use HasFactory<\Database\Factories\WasteCategoryFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+    ];
 }
