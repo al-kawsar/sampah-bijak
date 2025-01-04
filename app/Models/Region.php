@@ -9,4 +9,8 @@ class Region extends Model
 {
     /** @use HasFactory<\Database\Factories\RegionFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'region_name',
+    ];
 }
