@@ -12,6 +12,13 @@ class LearningModule extends Model
     public $incrementing = false; // Disable auto increment
     protected $keyType = 'string';
 
+    protected $fillable = [
+        'title',
+        'description',
+        'content',
+        'thumbnail',
+    ];
+
     protected static function boot()
     {
         parent::boot();
