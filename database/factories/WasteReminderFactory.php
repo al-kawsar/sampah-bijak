@@ -17,7 +17,12 @@ class WasteReminderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(),
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+            'reminder_time' => $this->faker->time,
+            'frequency' => $this->faker->randomElement(['daily', 'weekly', 'monthly']),
+            'is_active' => $this->faker->boolean,
         ];
     }
 }
