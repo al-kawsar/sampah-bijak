@@ -17,7 +17,9 @@ class WasteItemFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'category_id' => \App\Models\WasteCategory::factory(),
+            'name' => $this->faker->word,
+            'description' => $this->faker->sentence,
         ];
     }
 }
