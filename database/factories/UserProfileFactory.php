@@ -17,7 +17,10 @@ class UserProfileFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(), // Ini akan membuat pengguna baru dan mengaitkan ID-nya
+            'full_name' => $this->faker->name,
+            'phone_number' => $this->faker->phoneNumber,
+            'profile_picture' => $this->faker->imageUrl(),
         ];
     }
 }
