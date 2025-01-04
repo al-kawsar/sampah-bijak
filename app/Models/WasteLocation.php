@@ -9,4 +9,13 @@ class WasteLocation extends Model
 {
     /** @use HasFactory<\Database\Factories\WasteLocationFactory> */
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'type',
+        'address',
+        'latitude',
+        'longitude',
+        'capacity',
+        'contact_number',
+    ];
 }
