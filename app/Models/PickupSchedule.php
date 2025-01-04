@@ -11,6 +11,21 @@ class PickupSchedule extends Model
     use HasFactory;
     public $incrementing = false; // Disable auto increment
     protected $keyType = 'string';
+    protected $fillable = [
+        'user_id',
+        'pickup_date',
+        'pickup_time',
+        'notes',
+        'status',
+    ];
+
+    /**
+     * Define the relationship with the User model.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     protected static function boot()
     {
