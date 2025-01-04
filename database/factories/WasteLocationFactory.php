@@ -17,7 +17,13 @@ class WasteLocationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->word,
+            'type' => 'TPS',
+            'address' => $this->faker->address,
+            'latitude' => $this->faker->latitude,
+            'longitude' => $this->faker->longitude,
+            'capacity' => $this->faker->randomFloat(2, 0, 100),
+            'contact_number' => $this->faker->phoneNumber,
         ];
     }
 }
