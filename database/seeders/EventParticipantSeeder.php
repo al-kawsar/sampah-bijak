@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EventParticipant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class EventParticipantSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        EventParticipant::factory()->count(10)->create();
     }
 }
