@@ -14,9 +14,20 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => "Andi Muh. Raihan Alkawsar",
+            'id' => str()->uuid(),
+            'username' => "alkawsar",
             'email' => "raihanalkawsar92@gmail.com",
             'password' => "despasit0",
+            'role_id' => 3,
+            'region_id' => \App\Models\Region::inRandomOrder()->first()->id,
+        ]);
+        User::create([
+            'id' => str()->uuid(),
+            'username' => "ADMIN SAMPAH BIJAK",
+            'email' => "admin@gmail.com",
+            'password' => "despasit0",
+            'role_id' => 1,
+            'region_id' => \App\Models\Region::inRandomOrder()->first()->id,
         ]);
     }
 }
