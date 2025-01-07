@@ -16,7 +16,23 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
+            RoleSeeder::class,
+            RegionSeeder::class,
             UserSeeder::class,
+            UserProfileSeeder::class,
+            LearningModuleSeeder::class,
+            WasteLocationSeeder::class,
+            WasteCategorySeeder::class,
+            WasteItemSeeder::class,
+            WasteReportSeeder::class,
+            EventSeeder::class,
+            EventParticipantSeeder::class,
+            NotificationSeeder::class,
+            FAQSeeder::class,
+            HomepageSliderSeeder::class,
+            ContactMessageSeeder::class,
+            WasteReminderSeeder::class,
+            PickupScheduleSeeder::class,
         ]);
     }
 }
