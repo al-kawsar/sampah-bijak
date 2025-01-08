@@ -26,10 +26,10 @@ class EventController extends Controller
         switch ($role) {
             case 'warga':
             case 'petugas':
-                return $this->EventPage();
+            return $this->EventPage();
             case 'pemerintah':
             case 'admin':
-                return $this->EventManagement();
+            return $this->EventManagement();
         }
 
     }
@@ -46,10 +46,10 @@ class EventController extends Controller
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
                     return Event::where('title', 'LIKE', "%$query%")
-                        ->orWhere('description', 'LIKE', "%$query%")
-                        ->orWhere('location', 'LIKE', "%$query%")
-                        ->orderBy('id', 'desc')
-                        ->paginate($limit);
+                    ->orWhere('description', 'LIKE', "%$query%")
+                    ->orWhere('location', 'LIKE', "%$query%")
+                    ->orderBy('id', 'desc')
+                    ->paginate($limit);
                 });
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
@@ -141,7 +141,7 @@ class EventController extends Controller
 
     public function EventPage()
     {
-        return Inertia::render('App/Event');
+        return Inertia::render('App/Event/Event');
     }
     public function EventManagement()
     {
