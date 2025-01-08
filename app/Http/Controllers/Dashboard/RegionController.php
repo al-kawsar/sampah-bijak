@@ -47,10 +47,10 @@ class RegionController extends Controller
             }
 
             if ($type === "search")
-                $data = Region::query()->orderBy('id', 'desc')->paginate($limit);
+                $data = Region::query()->orderBy('region_name', 'asc')->paginate($limit);
 
 
-            return $this->success($data->items(), "Get Search Data", pagination: $this->getPaginationData($data));
+            return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
 
         } catch (\Exception $e) {
             return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
