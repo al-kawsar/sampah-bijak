@@ -28,6 +28,7 @@
         "@videojs-player/vue": "^1.0.0",
         "ant-design-vue": "^4.2.6",
         "chart.js": "^4.4.7",
+        "lodash": "^4.17.21",
         "video.js": "^7.21.6",
         "vue-chartjs": "^5.3.2"
     }
