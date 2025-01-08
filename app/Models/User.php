@@ -60,4 +60,31 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id');
     }
 
+
+    public function wasteReports()
+    {
+        return $this->hasMany(WasteReport::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+    public function pickupSchedules()
+    {
+        return $this->hasMany(PickupSchedule::class);
+    }
+
+    /**
+     * Relasi ke model UserProfile (satu pengguna memiliki satu profil)
+     */
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+    public function eventParticipants()
+    {
+        return $this->hasMany(EventParticipant::class);
+    }
+
 }
