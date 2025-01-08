@@ -4,6 +4,24 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
+use App\Models\ContactMessage;
+use App\Models\Event;
+use App\Models\EventParticipant;
+use App\Models\FAQ;
+use App\Models\File;
+use App\Models\HomepageSlider;
+use App\Models\LearningModule;
+use App\Models\Notification;
+use App\Models\PickupSchedule;
+use App\Models\Region;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\UserProfile;
+use App\Models\WasteCategory;
+use App\Models\WasteItem;
+use App\Models\WasteLocation;
+use App\Models\WasteReminder;
+use App\Models\WasteReport;
 
 
 class DashboardController extends Controller
@@ -15,14 +33,13 @@ class DashboardController extends Controller
         // dd($role);
         switch ($role) {
             case 'warga':
-                // return 'anjay';
-                return $this->CitizenDashboard();
+            return $this->CitizenDashboard();
             case 'petugas':
-                return $this->OfficerDashboard();
+            return $this->OfficerDashboard();
             case 'pemerintah':
-                return $this->GovermentDashboard();
+            return $this->GovermentDashboard();
             case 'admin':
-                return $this->AdminDashboard();
+            return $this->AdminDashboard();
         }
     }
 
@@ -40,7 +57,14 @@ class DashboardController extends Controller
     }
     public function AdminDashboard()
     {
-        return Inertia::render('App/Admin/Dashboard');
+        $data['totalUsers'] = User::count() ;
+        $data['totalReports'] = WasteReport::count() ;
+        $data['totalEvents'] = Event::count() ;
+        $data['totalModules'] = LearningModule::count() ;
+
+        return Inertia::render('App/Admin/Dashboard',[
+            'data' => $data
+        ]);
 
     }
 }
