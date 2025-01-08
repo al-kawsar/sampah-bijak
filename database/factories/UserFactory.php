@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'), // Default password
-            'region_id' => \App\Models\Region::factory(),
+            'region_id' => \App\Models\Region::inRandomOrder()->first()->id,
             'role_id' => \App\Models\Role::inRandomOrder()->first()->id,
             'remember_token' => Str::random(10),
         ];
