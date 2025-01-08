@@ -43,7 +43,7 @@ class UserController extends Controller
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
             }
 
-            $data = User::with(['profile', 'role'])->orderBy('id', 'desc')->paginate($limit);
+            $data = User::with(['profile', 'role','region'])->orderBy('id', 'desc')->paginate($limit);
 
 
             return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
