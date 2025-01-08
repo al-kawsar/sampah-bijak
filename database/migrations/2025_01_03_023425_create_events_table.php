@@ -13,12 +13,12 @@ return new class extends Migration {
         Schema::create('events', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title');
+            $table->string('thumbnail_url');
             $table->text('description');
             $table->timestamp('date');
             $table->text('location');
             $table->foreignUuid('organizer_id')->constrained('users', 'id')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('image');
-            $table->integer('max_participants');
+            $table->integer('capacity');
             $table->timestamps();
         });
     }
