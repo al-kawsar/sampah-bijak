@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('full_name');
             $table->string('phone_number');
+            $table->string('address');
             $table->string('profile_picture');
             $table->timestamps();
         });
