@@ -24,11 +24,14 @@ class PickupScheduleController extends Controller
 
         switch ($role) {
             case 'warga':
-                return $this->CitizenPickup();
+            return $this->CitizenPickup();
             case 'petugas':
-                return $this->OfficerPickup();
+            return $this->OfficerPickup();
+            case 'admin':
+            case 'pemerintah':
+            return $this->ManagementPickup();
             default:
-                abort(404);
+            abort(404);
         }
     }
     public function getData(Request $request)
@@ -44,9 +47,9 @@ class PickupScheduleController extends Controller
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
                     return PickupSchedule::where('username', 'LIKE', "%$query%")
-                        ->orWhere('email', 'LIKE', "%$query%")
-                        ->orderBy('id', 'desc')
-                        ->paginate($limit);
+                    ->orWhere('email', 'LIKE', "%$query%")
+                    ->orderBy('id', 'desc')
+                    ->paginate($limit);
                 });
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
@@ -132,5 +135,9 @@ class PickupScheduleController extends Controller
     public function OfficerPickup()
     {
         return Inertia::render('App/Officer/PickupSchedule');
+    }
+    public function ManagementPickup()
+    {
+        return Inertia::render('App/Management/PickupSchedule/Index');
     }
 }
