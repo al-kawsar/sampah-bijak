@@ -7,12 +7,13 @@ use App\Http\Requests\Dashboard\UserProfile\StoreRequest;
 use App\Http\Requests\Dashboard\UserProfile\UpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\UserProfile;
+use App\Models\User;
 use App\Traits\ApiResponse;
 use App\Traits\PaginatesData;
 
 class UserProfileController extends Controller
 {
-    use ApiResponse, PaginatesData;
+    use ApiResponse;
 
     const PAGE = 'user_profile';
 
@@ -20,32 +21,45 @@ class UserProfileController extends Controller
     public function getData(Request $request)
     {
         try {
-            $limit = $request->input('limit', 10);
+         $userId = auth()->id();
 
-            $data = UserProfile::query()->orderBy('id', 'desc')->paginate($limit);
+         $user = User::with(['profile','region','role'])->findOrFail($userId);
 
-            return $this->success($data->items(), "Get Search Data", pagination: $this->getPaginationData($data));
+         $profile = $user->profile;
 
-        } catch (\Exception $e) {
-            return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
-        }
+         $data = [
+            'id' => $user->id,
+            'username' => $user->username,
+            'email' => $user->email,
+            'full_name' => $profile->full_name,
+            'phone_number' => $profile->phone_number,
+            'address' => $profile->address,
+            'profile_picture' => $profile->profile_picture,
+            'region' => $user->region->region_name,
+            'role' => $user->role->name,
+        ];
+
+        return $this->success($data, "Get Data User Profile");
+    } catch (\Exception $e) {
+        return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
     }
+}
 
 
 
-    public function store(StoreRequest $request)
-    {
-        try {
-            $payload = $request->validated();
+public function store(StoreRequest $request)
+{
+    try {
+        $payload = $request->validated();
 
-            UserProfile::create($payload);
+        UserProfile::create($payload);
 
-            return $this->success(message: 'Success Create Data');
+        return $this->success(message: 'Success Create Data');
 
-        } catch (\Exception $e) {
-            return $this->internalServerError($e->getMessage(), 500);
-        }
+    } catch (\Exception $e) {
+        return $this->internalServerError($e->getMessage(), 500);
     }
+}
 
 
     /**
