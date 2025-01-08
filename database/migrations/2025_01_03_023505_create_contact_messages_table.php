@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('email');
             $table->string('subject');
             $table->string('message');
-            $table->enum('status', ['unread', 'read', 'replied']);
+            $table->enum('status', ['unread', 'read']);
             $table->timestamps();
         });
     }
