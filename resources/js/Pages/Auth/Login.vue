@@ -1,6 +1,15 @@
 <script setup>
 import { reactive } from "vue";
-import { Form, Input, Button, Checkbox, Grid, Typography, message } from "ant-design-vue";
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Grid,
+  Typography,
+  message,
+  Card,
+} from "ant-design-vue";
 import { MailOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { theme } from "ant-design-vue";
 import { ref, computed } from "vue";
@@ -19,19 +28,14 @@ const formState = reactive({
 
 const rules = {
   email: [
-    {
-      type: "email",
-      max: 255,
-      min: 8,
-      required: true,
-    },
+    { required: true, message: "Silakan masukkan alamat email Anda." },
+    { type: "email", message: "Silakan masukkan alamat email yang valid." },
+    { max: 255, message: "Alamat email tidak boleh lebih dari 255 karakter." },
   ],
   password: [
-    {
-      required: true,
-      max: 255,
-      min: 8,
-    },
+    { required: true, message: "Silakan masukkan kata sandi Anda." },
+    { min: 8, message: "Kata sandi harus memiliki panjang minimal 8 karakter." },
+    { max: 255, message: "Kata sandi tidak boleh lebih dari 255 karakter." },
   ],
 };
 
@@ -41,7 +45,12 @@ const styles = {
     padding: screens.md
       ? `${token.paddingXL}px`
       : `${token.sizeXXL}px ${token.padding}px`,
-    width: "380px",
+  },
+  card: {
+    width: "100%",
+    maxWidth: "400px",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+    borderRadius: "8px",
   },
   footer: {
     marginTop: "10px",
@@ -55,11 +64,11 @@ const styles = {
     marginBottom: token.marginXL,
   },
   section: {
-    alignItems: "center",
-    backgroundColor: token.colorBgContainer,
+    minHeight: "100vh",
     display: "flex",
-    height: screens.sm ? "100vh" : "100vh",
-    padding: screens.md ? `${token.sizeXXL}px 0px` : "0px",
+    justifyContent: "center",
+    alignItems: "center",
+    background: `linear-gradient(135deg, ${token.colorPrimary} 0%, ${token.colorPrimaryActive} 100%)`,
   },
   text: {
     color: token.colorTextSecondary,
@@ -94,76 +103,75 @@ const login = async (values) => {
 
 <template>
   <section :style="styles.section">
-    <div :style="styles.container">
-      <div :style="styles.header">
-        <Link :href="route('home.index')">
-          <svg
-            width="25"
-            height="24"
-            viewBox="0 0 25 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect x="0.464294" width="24" height="24" rx="4.8" fill="#1890FF" />
-            <path d="M14.8643 3.6001H20.8643V9.6001H14.8643V3.6001Z" fill="white" />
-            <path d="M10.0643 9.6001H14.8643V14.4001H10.0643V9.6001Z" fill="white" />
-            <path d="M4.06427 13.2001H11.2643V20.4001H4.06427V13.2001Z" fill="white" />
-          </svg>
-        </Link>
+    <Card :style="styles.card" :bodyStyle="{ padding: `${token.paddingLG}px` }">
+      <div :style="styles.container">
+        <div :style="styles.header">
+          <Link :href="route('home.index')">
+            <a-flex gap="small" class="logo" justify="center" align="center" horizontal>
+              <img src="/logo.png" alt="logo" width="44" />
+              <a-typography-title :level="4" :style="{ margin: 0, padding: 0 }"
+                >SampahBijak</a-typography-title
+              >
+            </a-flex>
+          </Link>
+          <a-divider />
+          <Typography.Title :style="styles.title">Login</Typography.Title>
+          <Typography.Text :style="{ marginBottom: '1rem', display: 'inline-block' }">
+            Selamat datang kembali!.
+          </Typography.Text>
+        </div>
 
-        <Typography.Title :style="styles.title">Login</Typography.Title>
-        <Typography.Text :style="{ marginBottom: '1rem', display: 'inline-block' }">
-          Selamat datang kembali! Silakan masukkan detail Anda untuk masuk dan mulai
-          menggunakan layanan kami.
-        </Typography.Text>
-      </div>
-
-      <Form
-        name="normal_login"
-        :model="formState"
-        :rules="rules"
-        @finish="login"
-        layout="vertical"
-        required-mark="optional"
-      >
-        <Form.Item name="email" :style="{ marginBottom: '2rem', display: 'inlblock' }">
-          <Input v-model:value="formState.email" autofocus>
-            <template #prefix>
-              <MailOutlined />
-            </template>
-          </Input>
-        </Form.Item>
-
-        <Form.Item name="password">
-          <Input.Password v-model:value="formState.password">
-            <template #prefix>
-              <LockOutlined />
-            </template>
-          </Input.Password>
-        </Form.Item>
-
-        <Form.Item>
-          <Form.Item name="remember" no-style>
-            <Checkbox v-model:checked="formState.remember">Ingat saya</Checkbox>
+        <Form
+          name="normal_login"
+          :model="formState"
+          :rules="rules"
+          @finish="login"
+          layout="vertical"
+          required-mark="optional"
+        >
+          <Form.Item name="email" :style="{ marginBottom: '2rem', display: 'inlblock' }">
+            <Input v-model:value="formState.email" autofocus>
+              <template #prefix>
+                <MailOutlined />
+              </template>
+            </Input>
           </Form.Item>
-          <a :style="styles.forgotPassword" href="">Lupa kata sandi?</a>
-        </Form.Item>
 
-        <Form.Item :style="{ marginBottom: '0px' }">
-          <Button
-            block
-            type="primary"
-            html-type="submit"
-            :disabled="disabled"
-            :loading="isLoading"
-            >Login</Button
-          >
-          <div :style="styles.footer">
-            <Typography.Text :style="styles.text">Belum punya akun? </Typography.Text>
-            <Typography.Link href=""> Daftar sekarang</Typography.Link>
-          </div>
-        </Form.Item>
-      </Form>
-    </div>
+          <Form.Item name="password">
+            <Input.Password v-model:value="formState.password">
+              <template #prefix>
+                <LockOutlined />
+              </template>
+            </Input.Password>
+          </Form.Item>
+
+          <Form.Item>
+            <Form.Item name="remember" no-style>
+              <Checkbox v-model:checked="formState.remember">Ingat saya</Checkbox>
+            </Form.Item>
+            <a :style="styles.forgotPassword" href="">Lupa kata sandi?</a>
+          </Form.Item>
+
+          <Form.Item :style="{ marginBottom: '0px' }">
+            <Button
+              block
+              type="primary"
+              html-type="submit"
+              :disabled="disabled"
+              :loading="isLoading"
+              >Login</Button
+            >
+            <div :style="styles.footer">
+              <Typography.Text :style="styles.text">Belum punya akun? </Typography.Text>
+              <Typography.Link @click.prevent>
+                <Link :href="route('auth.register.index')"
+                  >Daftar sekarang</Link
+                ></Typography.Link
+              >
+            </div>
+          </Form.Item>
+        </Form>
+      </div>
+    </Card>
   </section>
 </template>
