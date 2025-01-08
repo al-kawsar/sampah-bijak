@@ -25,11 +25,9 @@ class RoleController extends Controller
     public function getData(Request $request)
     {
         try {
-            $limit = $request->input('limit', Role::count());
+            $data = Role::query()->orderBy('id', 'desc')->get();
 
-            $data = Role::query()->orderBy('id', 'desc')->paginate($limit);
-
-            return $this->success($data->items(), "Get Search Data", pagination: $this->getPaginationData($data));
+            return $this->success($data, "Get All Data");
 
         } catch (\Exception $e) {
             return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
