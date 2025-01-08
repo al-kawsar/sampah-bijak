@@ -1,0 +1,6 @@
+### Store User Test
+POST http://localhost:8000/users
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+username=john_doe&email=john.doe@example.com&password=securePassword123&password_confirmation=securePassword123&region_id=1&role_id=2
