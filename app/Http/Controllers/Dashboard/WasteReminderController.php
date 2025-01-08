@@ -19,8 +19,7 @@ class WasteReminderController extends Controller
 
     public function index()
     {
-
-        // return Inertia::render("App/Data");
+        return Inertia::render("App/Management/WasteReminder/Index");
     }
     public function getData(Request $request)
     {
@@ -34,10 +33,10 @@ class WasteReminderController extends Controller
                 $cacheKey = self::PAGE . '_search:' . md5($query);
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
-                    return WasteReminder::where('username', 'LIKE', "%$query%")
-                        ->orWhere('email', 'LIKE', "%$query%")
-                        ->orderBy('id', 'desc')
-                        ->paginate($limit);
+                    return WasteReminder::where('title', 'LIKE', "%$query%")
+                    ->orWhere('description', 'LIKE', "%$query%")
+                    ->orderBy('id', 'desc')
+                    ->paginate($limit);
                 });
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
@@ -50,7 +49,7 @@ class WasteReminderController extends Controller
             //     $data = WasteReminder::limit($limit)->get(['id', 'name']);
 
 
-            return $this->success($data->items(), "Get Search Data", pagination: $this->getPaginationData($data));
+            return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
 
         } catch (\Exception $e) {
             return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
