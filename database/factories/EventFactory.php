@@ -20,12 +20,12 @@ class EventFactory extends Factory
         return [
             'id' => str()->uuid(),
             'title' => $this->faker->sentence,
+            'thumbnail_url' => $this->faker->imageUrl(),
             'description' => $this->faker->paragraph,
             'date' => $this->faker->dateTime,
             'location' => $this->faker->address,
             'organizer_id' => User::inRandomOrder()->first()->id,
-            'image' => $this->faker->imageUrl(),
-            'max_participants' => $this->faker->numberBetween(10, 100),
+            'capacity' => $this->faker->numberBetween(10, 100),
         ];
     }
 }
