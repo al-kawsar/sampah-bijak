@@ -11,10 +11,20 @@ use App\Models\LearningModule;
 use Inertia\Inertia;
 use App\Traits\ApiResponse;
 use App\Traits\PaginatesData;
+use App\Services\FileService;
+use Illuminate\Validation\ValidationException;
+
+
 class LearningModuleController extends Controller
 {
     use ApiResponse, PaginatesData;
 
+    protected $fileService;
+
+    public function __construct(FileService $fileService)
+    {
+        $this->fileService = $fileService;
+    }
     const PAGE = 'learning_modules';
 
     public function index()
@@ -24,12 +34,12 @@ class LearningModuleController extends Controller
         switch ($role) {
             case 'warga':
             case 'petugas':
-                return $this->LearningModulePage();
+            return $this->LearningModulePage();
             case 'admin':
             case 'pemerintah':
-                return $this->LearningModuleManagement();
+            return $this->LearningModuleManagement();
             default:
-                abort(404);
+            abort(404);
         }
 
     }
@@ -39,16 +49,21 @@ class LearningModuleController extends Controller
             $query = $request->input('search');
             $limit = $request->input('limit', 10);
             $type = $request->input('type', 'search');
-
             $query = $request->input('search');
+            $id = $request->input('id');
+
+            if ($id) {
+                return $this->getDetailData($id);
+            }
+
             if ($query) {
                 $cacheKey = self::PAGE . '_search:' . md5($query);
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
-                    return LearningModule::where('username', 'LIKE', "%$query%")
-                        ->orWhere('email', 'LIKE', "%$query%")
-                        ->orderBy('id', 'desc')
-                        ->paginate($limit);
+                    return LearningModule::where('title', 'LIKE', "%$query%")
+                    ->orWhere('thumbnail', 'LIKE', "%$query%")
+                    ->orderBy('updated_at', 'desc')
+                    ->paginate($limit);
                 });
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
@@ -56,13 +71,26 @@ class LearningModuleController extends Controller
             }
 
             if ($type === "search")
-                $data = LearningModule::query()->orderBy('id', 'desc')->paginate($limit);
-            // if ($type === "filter")
-            //     $data = LearningModule::limit($limit)->get(['id', 'name']);
+                $data = LearningModule::query()->orderBy('updated_at', 'desc')->paginate($limit);
 
 
-            return $this->success($data->items(), "Get Search Data", pagination: $this->getPaginationData($data));
+            return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
 
+        } catch (\Exception $e) {
+            return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
+        }
+    }
+
+    public function getDetailData($id)
+    {
+        try {
+        // Mencari modul pembelajaran berdasarkan ID
+            $module = LearningModule::findOrFail($id);
+
+        // Mengembalikan data modul dalam format sukses
+            return $this->success($module, "Get Module Detail Data");
+        } catch (ModelNotFoundException $e) {
+            return $this->notFound('Module not found', 404);
         } catch (\Exception $e) {
             return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
         }
@@ -74,6 +102,15 @@ class LearningModuleController extends Controller
     {
         try {
             $payload = $request->validated();
+
+            if ($request->hasFile('thumbnail')) {
+                $request_file = $request->file('thumbnail');
+                $file = $this->fileService->uploadFile($request_file);
+            } else {
+                throw ValidationException::withMessages(['profile_picture' => 'Thumbnail Wajib diisi.']);
+            }
+
+            $payload['thumbnail'] = $file->full_path;
 
             LearningModule::create($payload);
 
@@ -93,7 +130,13 @@ class LearningModuleController extends Controller
             "module" => $id
         ]);
     }
-    public function create(LearningModule $id)
+    public function edit(LearningModule $id)
+    {
+        return Inertia::render("App/Management/LearningModule/Edit", [
+            "module" => $id
+        ]);
+    }
+    public function create()
     {
         return Inertia::render("App/Management/LearningModule/Create");
     }
@@ -107,9 +150,20 @@ class LearningModuleController extends Controller
         try {
             $payload = $request->validated();
 
-            $id->updateOrFail($payload);
+            // if ($request->hasFile('thumbnail')) {
+            //     $request_file = $request->file('thumbnail');
+            //     $file = $this->fileService->uploadFile($request_file);
+            //     $payload['thumbnail'] = $file->full_path;
+            //     $msg = "update";
+            // }else {
+            $msg = " update";
+            $payload['thumbnail'] = $id->thumbnail;
+            // }
 
-            return $this->success(message: 'Success Update Data');
+            // $msg = "non update";
+            $id->update($payload);
+
+            return $this->success(message: 'Success Update Data' . $msg);
         } catch (\Exception $e) {
             return $this->internalServerError($e->getMessage(), 500);
 
