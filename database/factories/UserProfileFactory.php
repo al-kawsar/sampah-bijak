@@ -21,6 +21,7 @@ class UserProfileFactory extends Factory
             'full_name' => $this->faker->name,
             'phone_number' => $this->faker->phoneNumber,
             'profile_picture' => $this->faker->imageUrl(),
+            'address' => $this->faker->address,
         ];
     }
 }
