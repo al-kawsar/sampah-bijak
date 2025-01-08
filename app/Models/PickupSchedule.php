@@ -27,6 +27,8 @@ class PickupSchedule extends Model
         return $this->belongsTo(User::class);
     }
 
+
+
     protected static function boot()
     {
         parent::boot();
