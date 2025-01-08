@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\checkRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -7,11 +8,11 @@ use App\Http\Middleware\HandleInertiaRequests;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__ . '/../routes/web.php',
-        api: __DIR__ . '/../routes/api.php',
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
@@ -23,14 +24,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
-            // 'role' => checkRole::class,
+            'role' => checkRole::class,
             'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
         ]);
 
-        $middleware->validateCsrfTokens(except: [
-            'asanjay/*',
-        ]);
-
+        // $middleware->validateCsrfTokens(except: [
+        // ]);
+    
         $middleware->redirectGuestsTo(function (Request $request) {
             return route('auth.login.index');
         });
@@ -38,15 +38,30 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
             if (!app()->environment(['local', 'testing']) && in_array($response->getStatusCode(), [500, 503, 404, 403])) {
-                return Inertia::render('Errors/Index', ['status' => $response->getStatusCode()])
+                return Inertia::render('Errors/Index', [
+                    'status' => $response->getStatusCode()
+                ])
                     ->toResponse($request)
                     ->setStatusCode($response->getStatusCode());
             } elseif (in_array($response->getStatusCode(), [500, 503, 404, 403])) {
-                return Inertia::render('Errors/Index', ['status' => $response->getStatusCode()])
-                    ->toResponse($request)
-                    ->setStatusCode($response->getStatusCode());
+                // return Inertia::render('Errors/Index', [
+                //     'status' => $response->getStatusCode()
+                // ])
+                //     ->toResponse($request)
+                //     ->setStatusCode($response->getStatusCode());
+                return redirect()->back()->withErrors([
+                    'message' => 'Anda tidak memiliki hak akses yang cukup untuk masuk ke halaman yang anda tuju.'
+                ]);
             }
 
             return $response;
         });
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Record not found.'
+                ], 404);
+            }
+        });
+
     })->create();
