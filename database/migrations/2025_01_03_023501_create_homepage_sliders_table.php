@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->string('title');
             $table->text('description');
             $table->string('image');
-            $table->string('link');
             $table->integer('order_number')->default(1);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
