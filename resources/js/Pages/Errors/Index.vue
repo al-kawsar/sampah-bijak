@@ -55,6 +55,9 @@ const status = computed(() => {
 const handleBackHome = () => {
   router.get(route("home.index"));
 };
+const handleBackDashboard = () => {
+  router.get(route("app.dashboard"));
+};
 
 const handleReload = () => {
   window.location.reload();
