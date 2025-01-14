@@ -123,4 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'file_upload_endpoint' => env('FILE_UPLOAD_ENDPOINT', 'http://localhost'),
+
 ];
