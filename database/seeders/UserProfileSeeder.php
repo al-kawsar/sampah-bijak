@@ -6,6 +6,7 @@ use App\Models\UserProfile;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 class UserProfileSeeder extends Seeder
 {
@@ -14,12 +15,16 @@ class UserProfileSeeder extends Seeder
      */
     public function run(): void
     {
-        UserProfile::factory()->count(10)->create();
+        $users = User::all();
 
-        $profiles = UserProfile::factory()->count(10)->create();
-
-        foreach ($profiles as $profile) {
-            Log::info('User  Profile Created: ', ['user_id' => $profile->user_id]);
+        foreach ($users as $user) {
+            UserProfile::create([
+                'user_id' => $user->id,
+                'full_name' => ucfirst($user->username),
+                'phone_number' => '08123456789',
+                'address' => 'Alamat di ' . $user->region->region_name,
+                'profile_picture' => 'https://thumbs.dreamstime.com/b/vector-illustration-avatar-dummy-logo-collection-image-icon-stock-isolated-object-set-symbol-web-137160339.jpg',
+            ]);
         }
     }
 }
