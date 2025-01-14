@@ -18,9 +18,13 @@ return new class extends Migration {
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('location_id')->constrained('waste_locations')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('category_id')->constrained('waste_categories')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->integer('quantity');
-            $table->text('description');
-            $table->enum('status',['pending','verified','resolved']);
+            $table->integer('estimated_weight')->comment('Berat dalam kg');
+            $table->text('description')->nullable();
+            $table->string('photo_path')->nullable();
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
+            $table->enum('status', ['pending', 'verified', 'resolved'])->default('pending');
+            $table->foreignUuid('verified_by')->nullable()->constrained('users');
             $table->timestamps();
         });
     }
