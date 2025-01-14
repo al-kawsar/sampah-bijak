@@ -14,6 +14,7 @@ class UserProfile extends Model
         'full_name',
         'phone_number',
         'profile_picture',
+        'address'
     ];
 
     /**
