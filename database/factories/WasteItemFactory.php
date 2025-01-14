@@ -17,7 +17,7 @@ class WasteItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id' => \App\Models\WasteCategory::factory(),
+            'category_id' => \App\Models\WasteCategory::inRandomOrder()->first()->id,
             'name' => $this->faker->word,
             'description' => $this->faker->sentence,
         ];
