@@ -18,7 +18,6 @@ class StoreRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'region_id' => 'required|exists:regions,id',
-            'role_id' => 'required|exists:roles,id',
         ];
     }
 
@@ -37,8 +36,6 @@ class StoreRequest extends FormRequest
             'password.confirmed' => 'Konfirmasi password tidak sesuai.',
             'region_id.required' => 'Wilayah wajib dipilih.',
             'region_id.exists' => 'Wilayah tidak valid.',
-            'role_id.required' => 'Peran wajib dipilih.',
-            'role_id.exists' => 'Peran tidak valid.',
         ];
     }
 }
