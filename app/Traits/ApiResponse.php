@@ -29,7 +29,7 @@ trait ApiResponse
             $response['links'] = $pagination['links'];
         }
 
-        return response()->json($response, $statusCode);
+        return response()->json($response, $statusCode, [], JSON_UNESCAPED_UNICODE);
     }
 
     /**
