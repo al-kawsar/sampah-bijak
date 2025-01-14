@@ -11,6 +11,7 @@ class LearningModule extends Model
     use HasFactory;
     public $incrementing = false; // Disable auto increment
     protected $keyType = 'string';
+    public $timestamps = true;
 
     protected $fillable = [
         'title',
