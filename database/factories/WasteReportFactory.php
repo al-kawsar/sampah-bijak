@@ -19,19 +19,20 @@ class WasteReportFactory extends Factory
      */
     public function definition(): array
     {
-
-        $users = User::all();
-        $locations = WasteLocation::all();
-        $categories = WasteCategory::all();
-
         return [
-            'id' => str()->uuid(),
-            'user_id' => $users->random()->id,
-            'location_id' => $locations->random()->id,
-            'category_id' => $categories->random()->id,
-            'quantity' => $this->faker->numberBetween(1, 100),
-            'description' => $this->faker->text,
+            'id' => $this->faker->uuid(),
+            'user_id' => User::inRandomOrder()->value('id'),
+            'location_id' => WasteLocation::inRandomOrder()->value('id'),
+            'category_id' => WasteCategory::inRandomOrder()->value('id'),
+            'estimated_weight' => $this->faker->numberBetween(1, 100),
+            'description' => $this->faker->sentence(),
+            'photo_path' => $this->faker->imageUrl(),
+            'latitude' => $this->faker->latitude(-90, 90),
+            'longitude' => $this->faker->longitude(-180, 180),
             'status' => $this->faker->randomElement(['pending', 'verified', 'resolved']),
+            'verified_by' => User::inRandomOrder()->value('id'),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
