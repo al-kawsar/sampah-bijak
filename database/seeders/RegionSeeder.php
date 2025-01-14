@@ -13,10 +13,161 @@ class RegionSeeder extends Seeder
      */
     public function run(): void
     {
-        Region::create(['region_name' => 'Jakarta']);
-        Region::create(['region_name' => 'Bandung']);
-        Region::create(['region_name' => 'Surabaya']);
-        Region::create(['region_name' => 'Medan']);
-        Region::create(['region_name' => 'Bali']);
+        $regions = [
+            // Aceh
+            'Banda Aceh',
+            'Langsa',
+            'Lhokseumawe',
+            'Meulaboh',
+            'Sabang',
+            'Subulussalam',
+            // Sumatera Utara
+            'Medan',
+            'Binjai',
+            'Tebing Tinggi',
+            'Pematangsiantar',
+            'Sibolga',
+            'Gunungsitoli',
+            // Sumatera Barat
+            'Padang',
+            'Bukittinggi',
+            'Solok',
+            'Payakumbuh',
+            'Pariaman',
+            'Sawahlunto',
+            // Riau
+            'Pekanbaru',
+            'Dumai',
+            // Kepulauan Riau
+            'Tanjungpinang',
+            'Batam',
+            // Jambi
+            'Jambi',
+            'Sungai Penuh',
+            // Sumatera Selatan
+            'Palembang',
+            'Prabumulih',
+            'Lubuklinggau',
+            'Pagar Alam',
+            // Bangka Belitung
+            'Pangkalpinang',
+            // Bengkulu
+            'Bengkulu',
+            // Lampung
+            'Bandar Lampung',
+            'Metro',
+            // DKI Jakarta
+            'Jakarta Pusat',
+            'Jakarta Utara',
+            'Jakarta Barat',
+            'Jakarta Selatan',
+            'Jakarta Timur',
+            // Banten
+            'Serang',
+            'Tangerang',
+            'Cilegon',
+            'Tangerang Selatan',
+            // Jawa Barat
+            'Bandung',
+            'Bekasi',
+            'Bogor',
+            'Cimahi',
+            'Cirebon',
+            'Depok',
+            'Sukabumi',
+            'Tasikmalaya',
+            'Banjar',
+            // Jawa Tengah
+            'Semarang',
+            'Magelang',
+            'Surakarta (Solo)',
+            'Salatiga',
+            'Tegal',
+            'Pekalongan',
+            // DI Yogyakarta
+            'Yogyakarta',
+            // Jawa Timur
+            'Surabaya',
+            'Malang',
+            'Kediri',
+            'Blitar',
+            'Madiun',
+            'Mojokerto',
+            'Pasuruan',
+            'Probolinggo',
+            'Batu',
+            // Bali
+            'Denpasar',
+            // Nusa Tenggara Barat
+            'Mataram',
+            'Bima',
+            // Nusa Tenggara Timur
+            'Kupang',
+            // Kalimantan Barat
+            'Pontianak',
+            'Singkawang',
+            // Kalimantan Tengah
+            'Palangka Raya',
+            // Kalimantan Selatan
+            'Banjarmasin',
+            'Banjarbaru',
+            // Kalimantan Timur
+            'Samarinda',
+            'Balikpapan',
+            'Bontang',
+            // Kalimantan Utara
+            'Tarakan',
+            // Sulawesi Utara
+            'Manado',
+            'Bitung',
+            'Tomohon',
+            'Kotamobagu',
+            // Gorontalo
+            'Gorontalo',
+            // Sulawesi Tengah
+            'Palu',
+            // Sulawesi Selatan
+            'Makassar',
+            'Parepare',
+            'Palopo',
+            // Sulawesi Tenggara
+            'Kendari',
+            'Baubau',
+            // Sulawesi Barat
+            'Mamuju',
+            // Maluku
+            'Ambon',
+            'Tual',
+            // Maluku Utara
+            'Ternate',
+            'Tidore Kepulauan',
+            // Papua Barat
+            'Manokwari',
+            'Sorong',
+            // Papua
+            'Jayapura',
+            'Merauke',
+            'Timika',
+            // Papua Selatan
+            'Merauke',
+            // Papua Tengah
+            'Nabire',
+            // Papua Pegunungan
+            'Wamena',
+            // Papua Barat Daya
+            'Sorong Selatan',
+        ];
+
+
+        $regions = [
+            // Aceh
+            'Banda Aceh',
+            'Langsa',
+            'Lhokseumawe'
+        ];
+
+        foreach ($regions as $region) {
+            Region::create(['region_name' => $region]);
+        }
     }
 }
