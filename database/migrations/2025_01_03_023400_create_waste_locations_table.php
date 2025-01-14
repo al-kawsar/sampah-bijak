@@ -13,15 +13,15 @@ return new class extends Migration {
         Schema::create('waste_locations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['TPS', 'TPA', 'Pusat Daur Ulang', 'Tempat Pengolahan Sampah Organik', 'Tempat Pembuangan Limbah Berbahaya']);
+            $table->enum('type', ['TPS', 'TPA', 'TPS 3R', 'TPST']);
             $table->text('address');
-            $table->decimal('latitude', 10, 8);
-            $table->decimal('longitude', 11, 8);
+            $table->string('latitude');
+            $table->string('longitude');
             $table->decimal('capacity', 10, 2);
             $table->string('contact_number');
             $table->timestamps();
         });
-}
+    }
 
     /**
      * Reverse the migrations.
