@@ -61,9 +61,3 @@ composer run dev
 Akses aplikasi di [http://localhost:8000](http://localhost:8000).
 
 ---
-
-## **Panduan Pengguna**
-1. **Login/Registrasi**: Pengguna dapat membuat akun baru atau login menggunakan akun yang telah ada.
-2. **Setor Sampah**: Rumah tangga dapat mencatat sampah yang mereka setorkan ke bank sampah.
-3. **Lihat Statistik**: Pengguna dapat memantau statistik kontribusi mereka terhadap lingkungan.
-4. **Edukasi**: Akses materi pembelajaran tentang pengelolaan sampah.
