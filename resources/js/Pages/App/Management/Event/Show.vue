@@ -67,24 +67,23 @@
     return props.event.registered_count >= props.event.capacity ? 'Full' : 'Open';
   };
 </script>
-
 <template>
-  <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+  <div class="container">
     <!-- Hero Section -->
-    <div class="relative mb-8">
+    <div class="hero">
       <img
       :src="event.thumbnail_url"
-      class="w-full h-96 object-cover rounded-lg shadow-lg"
-      alt="Event thumbnail"
+      class="hero-image"
+      alt="Thumbnail Acara"
       />
-      <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent rounded-b-lg">
-        <h1 class="text-4xl font-bold text-white mb-2">{{ event.title }}</h1>
-        <div class="flex items-center text-white gap-4">
-          <span class="flex items-center gap-2">
+      <div class="hero-overlay">
+        <h1 class="hero-title">{{ event.title }}</h1>
+        <div class="hero-details">
+          <span class="hero-detail-item">
             <CalendarOutlined />
             {{ formatDate(event.date) }}
           </span>
-          <span class="flex items-center gap-2">
+          <span class="hero-detail-item">
             <EnvironmentOutlined />
             {{ event.location }}
           </span>
@@ -92,87 +91,87 @@
       </div>
     </div>
 
-    <!-- Content Grid -->
+    <!-- Konten Grid -->
     <Row :gutter="[24, 24]">
-      <!-- Main Content -->
+      <!-- Konten Utama -->
       <Col :span="16">
-      <Card title="About Event" class="mb-6">
-        <p class="text-lg leading-relaxed whitespace-pre-line">
+      <Card title="Tentang Acara" class="content-card">
+        <p class="content-text">
           {{ event.description }}
         </p>
       </Card>
 
-      <!-- Organizer Information -->
-      <Card title="Organizer" class="mb-6" v-if="event.organizer">
-        <div class="flex items-center gap-4">
+      <!-- Informasi Penyelenggara -->
+      <Card title="Penyelenggara" class="content-card" v-if="event.organizer">
+        <div class="organizer-info">
           <Avatar :size="64" :src="event.organizer.avatar_url" />
           <div>
-            <h3 class="text-lg font-semibold">{{ event.organizer.name }}</h3>
+            <h3 class="organizer-name">{{ event.organizer.name }}</h3>
           </div>
         </div>
       </Card>
 
-      <!-- Map -->
-      <Card title="Location" class="mb-6">
-        <div ref="mapContainer" class="h-96 rounded-lg"></div>
+      <!-- Peta -->
+      <Card title="Lokasi" class="content-card">
+        {{ event.location }}
       </Card>
     </Col>
 
     <!-- Sidebar -->
     <Col :span="8">
-    <!-- Event Stats -->
-    <Card class="mb-6">
+    <!-- Statistik Acara -->
+    <Card class="content-card">
       <Row :gutter="[16, 16]">
         <Col :span="12">
         <Statistic
-        title="Capacity"
+        title="Kapasitas"
         :value="event.capacity"
         :prefix="h(TeamOutlined)"
         />
       </Col>
       <Col :span="12">
       <Statistic
-      title="Registration"
+      title="Pendaftaran"
       :value="event.participant_percentage"
       suffix="%"
       :prefix="h(UserOutlined)"
       />
     </Col>
   </Row>
-  <div class="mt-4 text-center">
+  <div class="registration-status">
     <Tag :color="event.registered_count >= event.capacity ? 'red' : 'green'">
       {{ getRegistrationStatus() }}
     </Tag>
   </div>
 </Card>
 
-<!-- Date & Time -->
-<Card title="Schedule Details" class="mb-6">
-  <div class="flex items-center gap-3 mb-4">
-    <CalendarOutlined class="text-2xl text-blue-500" />
+<!-- Jadwal -->
+<Card title="Detail Jadwal" class="content-card">
+  <div class="schedule-detail">
+    <CalendarOutlined class="icon" />
     <div>
-      <div class="font-semibold">Date</div>
+      <div class="schedule-title">Tanggal</div>
       <div>{{ new Date(event.date).toLocaleDateString('id-ID') }}</div>
     </div>
   </div>
-  <div class="flex items-center gap-3">
-    <ClockCircleOutlined class="text-2xl text-blue-500" />
+  <div class="schedule-detail">
+    <ClockCircleOutlined class="icon" />
     <div>
-      <div class="font-semibold">Time</div>
+      <div class="schedule-title">Waktu</div>
       <div>{{ new Date(event.date).toLocaleTimeString('id-ID') }}</div>
     </div>
   </div>
 </Card>
 
-<!-- Registration Button -->
+<!-- Tombol Pendaftaran -->
 <Button
 type="primary"
 block
 size="large"
-class="h-12"
+class="register-button"
 :disabled="event.registered_count >= event.capacity"
 >
-{{ event.registered_count >= event.capacity ? 'Event Full' : 'Register for Event' }}
+{{ event.registered_count >= event.capacity ? 'Acara Penuh' : 'Daftar Acara' }}
 </Button>
 </Col>
 </Row>
@@ -180,16 +179,104 @@ class="h-12"
 </template>
 
 <style scoped>
-  :deep(.ant-card-head-title) {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
+/***** Container *****/
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+}
 
-  :deep(.ant-statistic-title) {
-    font-size: 1rem;
-  }
+/***** Hero Section *****/
+.hero {
+  position: relative;
+  margin-bottom: 32px;
+}
+.hero-image {
+  width: 100%;
+  height: 384px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.hero-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 8px;
+}
+.hero-details {
+  display: flex;
+  gap: 16px;
+  color: white;
+}
+.hero-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-  :deep(.ant-statistic-content) {
-    font-size: 1.5rem;
-  }
+/***** Konten *****/
+.content-card {
+  margin-bottom: 24px;
+}
+.content-text {
+  font-size: 18px;
+  line-height: 1.75;
+  white-space: pre-line;
+}
+
+/***** Organizer *****/
+.organizer-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.organizer-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/***** Map *****/
+.map {
+  height: 384px;
+  border-radius: 12px;
+  background: #f0f0f0;
+}
+
+/***** Registration *****/
+.registration-status {
+  margin-top: 16px;
+  text-align: center;
+}
+
+/***** Schedule *****/
+.schedule-detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.icon {
+  font-size: 24px;
+  color: #1d4ed8;
+}
+.schedule-title {
+  font-weight: 600;
+}
+
+/***** Tombol *****/
+.register-button {
+  height: 48px;
+  font-size: 16px;
+}
 </style>
