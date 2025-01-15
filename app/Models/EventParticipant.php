@@ -21,19 +21,13 @@ class EventParticipant extends Model
         'registered_at' => 'datetime',
     ];
 
-    /**
-     * Relasi ke model User
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relasi ke model Event
-     */
     public function event()
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class, 'event_id');
     }
 }
