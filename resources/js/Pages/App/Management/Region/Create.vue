@@ -36,26 +36,26 @@ const handleSubmit = async () => {
 <template>
   <div class="p-6">
     <div class="mb-6">
-      <h1 class="text-2xl font-bold">Create New Region</h1>
+      <h1 class="text-2xl font-bold">Tambah Wilayah Baru</h1>
     </div>
 
     <a-card>
       <a-form :model="form" layout="vertical" @finish="handleSubmit">
         <a-form-item
-          label="Region Name"
+          label="Nama Wilayah"
           name="region_name"
           :rules="[{ required: true, message: 'Please input region name!' }]"
-    >
+        >
           <a-input v-model:value="form.region_name" placeholder="Enter region name" />
         </a-form-item>
 
         <a-form-item>
           <a-space>
             <a-button type="primary" html-type="submit" :loading="loading">
-              Create Region
+              Tambah
             </a-button>
             <a-button @click="() => router.visit(route('app.regions.index'))">
-              Cancel
+              Kembali
             </a-button>
           </a-space>
         </a-form-item>

@@ -42,13 +42,13 @@ const handleSubmit = async () => {
 <template>
   <div class="p-6">
     <div class="mb-6">
-      <h1 class="text-2xl font-bold">Edit Region</h1>
+      <h1 class="text-2xl font-bold">Ubah Wilayah</h1>
     </div>
 
     <a-card>
       <a-form :model="form" layout="vertical" @finish="handleSubmit">
         <a-form-item
-          label="Region Name"
+          label="Nama Wilayah"
           name="region_name"
           :rules="[{ required: true, message: 'Please input region name!' }]"
         >
@@ -58,10 +58,10 @@ const handleSubmit = async () => {
         <a-form-item>
           <a-space>
             <a-button type="primary" html-type="submit" :loading="loading">
-              Update Region
+              Simpan Perubahan
             </a-button>
             <a-button @click="() => router.get(route('app.regions.index'))">
-              Cancel
+              Kembali
             </a-button>
           </a-space>
         </a-form-item>

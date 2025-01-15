@@ -33,7 +33,8 @@ class WasteReminderController extends Controller
                 $cacheKey = self::PAGE . '_search:' . md5($query);
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
-                    return WasteReminder::where('title', 'LIKE', "%$query%")
+                    return WasteReminder::where('user_id', '=', auth()->id())
+                    ->orWhere('title', 'LIKE', "%$query%")
                     ->orWhere('description', 'LIKE', "%$query%")
                     ->orderBy('id', 'desc')
                     ->paginate($limit);
@@ -44,7 +45,7 @@ class WasteReminderController extends Controller
             }
 
             if ($type === "search")
-                $data = WasteReminder::query()->orderBy('id', 'desc')->paginate($limit);
+                $data = WasteReminder::query()->where('user_id', '=', auth()->id())->orderBy('id', 'desc')->paginate($limit);
             // if ($type === "filter")
             //     $data = WasteReminder::limit($limit)->get(['id', 'name']);
 
@@ -62,6 +63,7 @@ class WasteReminderController extends Controller
     {
         try {
             $payload = $request->validated();
+            $payload['user_id'] = auth()->id();
 
             WasteReminder::create($payload);
 
@@ -78,7 +80,7 @@ class WasteReminderController extends Controller
     public function show(WasteReminder $id)
     {
         return Inertia::render("App/Detail", [
-            "student" => $id
+            "reminder" => $id
         ]);
     }
 
@@ -107,6 +109,7 @@ class WasteReminderController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data');
             }
 

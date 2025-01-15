@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="title" content="InfyBonus">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* Body Styling */
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f4f8;
+        }
+
+        /* Error Container Styling */
+        .error-container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Gradient Background for the heading */
+        .error-heading {
+            font-size: 140px;
+            font-weight: 900;
+            color: transparent;
+            background: linear-gradient(90deg, #f26c4f, #f2994a, #f2c94c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            letter-spacing: 5px;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+        }
+
+        /* Error message styling */
+        .error-message {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        /* Description text */
+        .error-paragraph {
+            font-size: 16px;
+            color: #787878;
+            margin: 10px 0 30px;
+        }
+
+        /* Button styling */
+        .error-btn {
+            background-color: #6e749e;
+            border: none;
+            outline: none;
+            padding: 12px 30px;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .error-btn:hover {
+            background-color: #5a6389;
+            transform: translateY(-3px);
+        }
+
+        .error-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .error-heading {
+                font-size: 100px;
+            }
+
+            .error-message {
+                font-size: 16px;
+            }
+
+            .error-paragraph {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="error-container">
+        <h1 class="error-heading">404</h1>
+        <h2 class="error-message">Boo! Something went wrong</h2>
+        <p class="error-paragraph">It seems like you're not connected to the internet or the page doesn't exist. Please
+            check your network connection and try again or head back to the homepage.</p>
+        <a href="/" class="error-btn">Back to Home Page</a>
+    </div>
+
+</body>
+
+</html>

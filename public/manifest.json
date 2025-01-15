@@ -1,0 +1,17 @@
+{
+    "name": "Smpah Bijak",
+    "short_name": "SampahBijak",
+    "start_url": "/index.php",
+    "background_color": "#6777ef",
+    "description": "'Sampah Bijak' menghubungkan rumah tangga, pemerintah daerah, bank sampah, industri daur ulang, dan komunitas melalui platform terpadu untuk mengedukasi, memantau, dan mengelola sampah secara efektif.",
+    "display": "fullscreen",
+    "theme_color": "#6777ef",
+    "icons": [
+        {
+            "src": "logo.PNG",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

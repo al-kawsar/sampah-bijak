@@ -25,9 +25,9 @@ class WasteCategoryController extends Controller
         switch ($role) {
             case 'admin':
             case 'pemerintah':
-                return $this->WasteCategoryManagement();
+            return $this->WasteCategoryManagement();
             default:
-                abort(404);
+            abort(404);
         }
     }
     public function getData(Request $request)
@@ -43,9 +43,9 @@ class WasteCategoryController extends Controller
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
                     return WasteCategory::where('username', 'LIKE', "%$query%")
-                        ->orWhere('email', 'LIKE', "%$query%")
-                        ->orderBy('id', 'desc')
-                        ->paginate($limit);
+                    ->orWhere('email', 'LIKE', "%$query%")
+                    ->orderBy('id', 'desc')
+                    ->paginate($limit);
                 });
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
@@ -126,6 +126,7 @@ class WasteCategoryController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data');
             }
 

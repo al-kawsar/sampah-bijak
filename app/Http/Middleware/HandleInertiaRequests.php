@@ -39,18 +39,19 @@ class HandleInertiaRequests extends Middleware
         $sidebarMenus = (new GetSidebarMenu())->handle();
         return array_merge(parent::share($request), [
             "app_name" => config("app.name"),
+            'csrf_token' => csrf_token(),
             "user" => fn() => $request->user()
-                ? $request->user()->only("id", "username", "email") + [
-                    'profile_picture' => $request->user()->profile
+            ? $request->user()->only("id", "username", "email") + [
+                'profile_picture' => $request->user()->profile
                         ? asset($request->user()->profile->profile_picture) // Use asset() to generate the full URL
                         : null
-                ]
-                : null,
-            "role" => fn() => $request->user()
-                ? $request->user()->role->name
-                : null,
-            'sidebar_menus' => $sidebarMenus
-        ]);
+                    ]
+                    : null,
+                    "role" => fn() => $request->user()
+                    ? $request->user()->role->name
+                    : null,
+                    'sidebar_menus' => $sidebarMenus
+                ]);
     }
 }
 

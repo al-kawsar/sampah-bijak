@@ -35,10 +35,9 @@ class NotificationController extends Controller
                 $cacheKey = self::PAGE . '_search:' . md5($query);
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
-                    return Notification::where('username', 'LIKE', "%$query%")
-                        ->orWhere('email', 'LIKE', "%$query%")
-                        ->orderBy('id', 'desc')
-                        ->paginate($limit);
+                    return Notification::where('user_id', '=', auth()->id())
+                    ->orderBy('update_at', 'desc')
+                    ->paginate($limit);
                 });
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
@@ -109,6 +108,7 @@ class NotificationController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data');
             }
 

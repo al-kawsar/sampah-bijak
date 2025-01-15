@@ -26,7 +26,6 @@ class StoreRequest extends FormRequest
             'description' => 'required|string',
             'date' => 'required|date|after_or_equal:today',
             'location' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Maksimal 2MB
             'capacity' => 'required|integer|min:1',
             'thumbnail_url' => 'required|file|mimes:jpg,jpeg,png|max:2048',
             'thumbnail_url.required' => 'Thumbnail wajib diunggah.',
@@ -48,7 +47,7 @@ class StoreRequest extends FormRequest
             'description.required' => 'Deskripsi acara harus diisi.',
             'date.required' => 'Tanggal acara harus diisi.',
             'location.required' => 'Lokasi acara harus diisi.',
-            'image.image' => 'File gambar harus berupa gambar.',
+            'thumbnail_url.image' => 'File gambar harus berupa gambar.',
             'capacity.required' => 'Jumlah peserta maksimal harus diisi.',
         ];
     }

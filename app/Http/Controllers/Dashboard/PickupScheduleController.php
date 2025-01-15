@@ -45,53 +45,84 @@ class PickupScheduleController extends Controller
             if ($query) {
                 $cacheKey = self::PAGE . '_search:' . md5($query);
 
-                $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
-                    return PickupSchedule::where('username', 'LIKE', "%$query%")
-                    ->orWhere('email', 'LIKE', "%$query%")
-                    ->orderBy('id', 'desc')
+                $role = auth()->user()->role->name;
+                if($role === 'admin' || $role === 'pemerintah'){
+                    $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
+                        return PickupSchedule::where('pickup_date', 'LIKE', "%$query%")
+                        ->orWhere('pickup_time', 'LIKE', "%$query%")
+                        ->orWhere('status', 'LIKE', "%$query%")
+                        ->orderBy('id', 'desc')
+                        ->paginate($limit);
+                    });
+                }
+                else if($role === 'warga'){
+                   $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
+                    return PickupSchedule::with('user.region')
+                    ->whereHas('user', function ($query) use ($regionId) {
+                        $query->where('region_id', $regionId);
+                    })
+                    ->orderBy('pickup_date', 'asc')
                     ->paginate($limit);
                 });
 
-                return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
+               }else if($role === 'petugas'){
+                   $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
+                    return PickupSchedule::where('user_id', '=', auth()->id())
+                    ->orderBy('id', 'desc')
+                    ->paginate($limit);
+                });
+               }
 
-            }
+               return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
 
-            if ($type === "search")
-                $data = PickupSchedule::with(['user.profile'])->orderBy('id', 'desc')->paginate($limit);
+           }
+
+           if ($type === "search")
+            $data = PickupSchedule::with(['user.profile'])->orderBy('id', 'desc')->paginate($limit);
 
 
-            return $this->success($data->items(), "Get Search Data", pagination: $this->getPaginationData($data));
+        return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
 
-        } catch (\Exception $e) {
-            return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
-        }
+    } catch (\Exception $e) {
+        return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
     }
+}
 
 
 
-    public function store(StoreRequest $request)
-    {
-        try {
-            $payload = $request->validated();
+public function store(StoreRequest $request)
+{
+    try {
+        $payload = $request->validated();
 
-            PickupSchedule::create($payload);
+        PickupSchedule::create($payload);
 
-            return $this->success(message: 'Success Create Data');
+        return $this->success(message: 'Success Create Data');
 
-        } catch (\Exception $e) {
-            return $this->internalServerError($e->getMessage(), 500);
-        }
+    } catch (\Exception $e) {
+        return $this->internalServerError($e->getMessage(), 500);
     }
+}
 
     /**
      * Display the specified resource.
      */
     public function show(PickupSchedule $id)
     {
-        return Inertia::render("App/Detail", [
-            "student" => $id
-        ]);
-    }
+      Inertia::render("App/Detail", [
+        "pickup" => $id
+    ]);
+  }
+
+  public function histroyPage()
+  {
+    $userId = auth()->id();
+    $results = PickupSchedule::orderBy('updated_at', 'desc')->get();
+
+    return Inertia::render("App/Officer/TransportationHistory",[
+        'pickup' => $results
+    ]);
+}
 
 
     /**
@@ -102,6 +133,7 @@ class PickupScheduleController extends Controller
         try {
             $payload = $request->validated();
 
+            Cache::flush();
             $id->updateOrFail($payload);
 
             return $this->success(message: 'Success Update Data');
@@ -118,6 +150,7 @@ class PickupScheduleController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data');
             }
 

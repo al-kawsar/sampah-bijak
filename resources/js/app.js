@@ -4,6 +4,12 @@ import { ZiggyVue } from "ziggy-js";
 import { Link, Head } from "@inertiajs/vue3";
 import Antd, { message } from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
+import "@/bootstrap.js";
+
+import { Bar } from 'vue-chartjs';
+import { Chart as ChartJS, Filler, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement} from 'chart.js';
+
+ChartJS.register(Title, Tooltip, Filler, Legend, BarElement, CategoryScale, LinearScale, ArcElement);
 
 createInertiaApp({
     progress: {

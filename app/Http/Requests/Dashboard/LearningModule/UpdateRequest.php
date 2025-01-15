@@ -11,18 +11,16 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Ganti sesuai kebijakan otorisasi Anda.
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
+
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
-            'content' => 'sometimes|required|string',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'content' => 'required|string',
             'thumbnail' => 'nullable|image|max:2048', // Max 2MB
         ];
     }

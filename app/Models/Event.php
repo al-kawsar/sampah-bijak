@@ -12,6 +12,7 @@ class Event extends Model
 
     public $incrementing = false; // Disable auto increment
     protected $keyType = 'string';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'id', 
@@ -20,8 +21,8 @@ class Event extends Model
         'date', 
         'location', 
         'organizer_id', 
-        'image', 
-        'max_participants'
+        'thumbnail_url',
+        'capacity',
     ];
 
     protected $casts = [

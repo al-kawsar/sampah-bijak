@@ -17,10 +17,6 @@ return Application::configure(basePath: dirname(__DIR__))
     health: '/up',
 )
 ->withMiddleware(function (Middleware $middleware) {
-    $middleware->redirectGuestsTo(function (Request $request) {
-        return route('auth.login.index');
-    });
-
     $middleware->statefulApi();
 
     $middleware->web(append: [
@@ -32,6 +28,10 @@ return Application::configure(basePath: dirname(__DIR__))
         'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
         'Image' => Intervention\Image\Facades\Image::class,
     ]);
+
+    $middleware->redirectGuestsTo(function (Request $request) {
+        return route('auth.login.index');
+    });
 
         // $middleware->validateCsrfTokens(except: [
         // ]);

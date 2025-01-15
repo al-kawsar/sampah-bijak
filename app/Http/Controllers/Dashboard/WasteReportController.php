@@ -131,6 +131,7 @@ class WasteReportController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data');
             }
 

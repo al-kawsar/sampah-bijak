@@ -38,8 +38,8 @@ class RegionController extends Controller
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
                     return Region::where('region_name', 'LIKE', "%$query%")
-                        ->orderBy('id', 'desc')
-                        ->paginate($limit);
+                    ->orderBy('id', 'desc')
+                    ->paginate($limit);
                 });
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
@@ -118,6 +118,7 @@ class RegionController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data');
             }
 

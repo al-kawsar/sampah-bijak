@@ -35,9 +35,9 @@ class UserController extends Controller
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
                     return User::where('username', 'LIKE', "%$query%")
-                        ->orWhere('email', 'LIKE', "%$query%")
-                        ->orderBy('id', 'desc')
-                        ->paginate($limit);
+                    ->orWhere('email', 'LIKE', "%$query%")
+                    ->orderBy('id', 'desc')
+                    ->paginate($limit);
                 });
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
@@ -74,21 +74,35 @@ class UserController extends Controller
      */
     public function show(User $id)
     {
-        return Inertia::render("App/Management/User/Show", [
-            "user" => $id
-        ]);
-    }
-    public function edit(User $id)
-    {
-        return Inertia::render("App/Management/User/Edit", [
-            "user" => $id
-        ]);
-    }
+     $id->load(['profile', 'region', 'role']);
 
-    public function create()
-    {
-        return Inertia::render("App/Management/User/Create");
-    }
+     $data = [
+        'id' => $id->id,
+        'username' => $id->username,
+        'email' => $id->email,
+        'full_name' => $id->profile->full_name ?? null,
+        'phone_number' => $id->profile->phone_number ?? null,
+        'address' => $id->profile->address ?? null,
+        'profile_picture' => $id->profile->profile_picture ?? null,
+        'region' => $id->region->region_name ?? null,
+        'role' => $id->role->name ?? null,
+    ];
+
+    return Inertia::render("App/Management/User/Show", [
+        "user" => $data
+    ]);
+}
+public function edit(User $id)
+{
+    return Inertia::render("App/Management/User/Edit", [
+        "user" => $id
+    ]);
+}
+
+public function create()
+{
+    return Inertia::render("App/Management/User/Create");
+}
 
 
     /**
@@ -115,6 +129,7 @@ class UserController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data');
             }
 

@@ -20,7 +20,6 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|uuid|exists:users,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'reminder_time' => 'required|date_format:H:i',
@@ -35,9 +34,6 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_id.required' => 'ID pengguna wajib diisi.',
-            'user_id.uuid' => 'ID pengguna harus berupa UUID yang valid.',
-            'user_id.exists' => 'ID pengguna tidak ditemukan dalam daftar pengguna.',
             'title.required' => 'Judul pengingat wajib diisi.',
             'title.string' => 'Judul pengingat harus berupa teks.',
             'title.max' => 'Judul pengingat tidak boleh lebih dari 255 karakter.',

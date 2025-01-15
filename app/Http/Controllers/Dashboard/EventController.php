@@ -9,13 +9,23 @@ use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Services\FileService;
 use Inertia\Inertia;
 use App\Traits\ApiResponse;
 use App\Traits\PaginatesData;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
     use ApiResponse, PaginatesData;
+
+    protected $fileService;
+
+    public function __construct(FileService $fileService)
+    {
+        $this->fileService = $fileService;
+    }
 
     const PAGE = 'events';
 
@@ -39,24 +49,18 @@ class EventController extends Controller
             $query = $request->input('search');
             $limit = $request->input('limit', 10);
             $type = $request->input('type', 'search');
-
             $query = $request->input('search');
-            if ($query !== "") {
-                $cacheKey = self::PAGE . '_search:' . md5($query);
+            if ($type === "search" && $query !== null) {
 
-                $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
-                    return Event::where('title', 'LIKE', "%$query%")
-                    ->orWhere('description', 'LIKE', "%$query%")
-                    ->orWhere('location', 'LIKE', "%$query%")
-                    ->orderBy('id', 'desc')
-                    ->paginate($limit);
-                });
+                $results = Event::where('title', 'LIKE', "%$query%")
+                ->orWhere('description', 'LIKE', "%$query%")
+                ->orderBy('id', 'desc')
+                ->paginate($limit);
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
             }
 
-            if ($type === "search")
-                $data = Event::query()->orderBy('id', 'desc')->paginate($limit);
+            $data = Event::query()->select('id','title','description','date','location','thumbnail_url','capacity','organizer_id')->orderBy('updated_at', 'desc')->paginate($limit);
 
             return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
         } catch (\Exception $e) {
@@ -71,6 +75,14 @@ class EventController extends Controller
         try {
             $payload = $request->validated();
 
+            if ($request->hasFile('thumbnail_url')) {
+                $request_file = $request->file('thumbnail_url');
+                $file = $this->fileService->uploadFile($request_file);
+            } else {
+                throw ValidationException::withMessages(['thumbnail_url' => 'Thumbnail Wajib diisi.']);
+            }
+
+            $payload['thumbnail_url'] = $file->full_path;
             $payload['organizer_id'] = auth()->id();
 
             Event::create($payload);
@@ -91,36 +103,45 @@ class EventController extends Controller
             "event" => $id
         ]);
     }
-    public function edit(Event $id)
-    {
-        return Inertia::render("App/Management/Event/Edit", [
-            "event" => $id
-        ]);
-    }
+
     public function create()
     {
         return Inertia::render("App/Management/Event/Create");
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateRequest $request, Event $id)
     {
         try {
             $payload = $request->validated();
 
-            $payload['organizer_id'] = auth()->id();
+            if ($request->hasFile('thumbnail_url')) {
+                if ($id->thumbnail_url) {
+                    $this->fileService->deleteFileByPath($id->thumbnail_url);
+                }
 
-            $id->updateOrFail($payload);
+                $requestFile = $request->file('thumbnail_url');
+                $file = $this->fileService->uploadFile($requestFile);
+                $payload['thumbnail_url'] = $file->full_path;
+            }
+
+            Cache::flush();
+            $id->update($payload);
 
             return $this->success(message: 'Success Update Data');
         } catch (\Exception $e) {
+            Log::error('Error updating event:', ['error' => $e->getMessage()]);
             return $this->internalServerError($e->getMessage(), 500);
-
         }
     }
+
+    public function edit(Event $id)
+    {
+        return Inertia::render("App/Management/Event/Edit", [
+            "event" => $id
+        ]);
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -129,6 +150,7 @@ class EventController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data Event');
             }
 

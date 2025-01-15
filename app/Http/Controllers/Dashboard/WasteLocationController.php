@@ -26,10 +26,10 @@ class WasteLocationController extends Controller
         switch ($role) {
             case 'warga':
             case 'petugas':
-                return $this->WasteLocationPage();
+            return $this->WasteLocationPage();
             case 'admin':
             case 'pemerintah':
-                return $this->WasteLocationManagement();
+            return $this->WasteLocationManagement();
         }
     }
     public function getData(Request $request)
@@ -45,9 +45,9 @@ class WasteLocationController extends Controller
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
                     return WasteLocation::where('username', 'LIKE', "%$query%")
-                        ->orWhere('email', 'LIKE', "%$query%")
-                        ->orderBy('id', 'desc')
-                        ->paginate($limit);
+                    ->orWhere('email', 'LIKE', "%$query%")
+                    ->orderBy('id', 'desc')
+                    ->paginate($limit);
                 });
 
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
@@ -92,6 +92,10 @@ class WasteLocationController extends Controller
             "wasteLocation" => $id
         ]);
     }
+    public function location()
+    {
+        return Inertia::render("App/Citizen/Location");
+    }
     public function create(WasteLocation $id)
     {
         return Inertia::render("App/Management/WasteLocation/Create");
@@ -128,6 +132,7 @@ class WasteLocationController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data');
             }
 

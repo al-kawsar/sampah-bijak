@@ -150,20 +150,11 @@ class LearningModuleController extends Controller
         try {
             $payload = $request->validated();
 
-            // if ($request->hasFile('thumbnail')) {
-            //     $request_file = $request->file('thumbnail');
-            //     $file = $this->fileService->uploadFile($request_file);
-            //     $payload['thumbnail'] = $file->full_path;
-            //     $msg = "update";
-            // }else {
-            $msg = " update";
-            $payload['thumbnail'] = $id->thumbnail;
-            // }
 
-            // $msg = "non update";
+
             $id->update($payload);
 
-            return $this->success(message: 'Success Update Data' . $msg);
+            return $this->success(message: 'Success Update Data' );
         } catch (\Exception $e) {
             return $this->internalServerError($e->getMessage(), 500);
 
@@ -177,6 +168,7 @@ class LearningModuleController extends Controller
     {
         try {
             if ($id->delete()) {
+                Cache::flush();
                 return $this->success(message: 'Success Destroy Data');
             }
 

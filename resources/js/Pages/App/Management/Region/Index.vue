@@ -41,7 +41,7 @@ const columns = [
     width: "65%",
   },
   {
-    title: "Actions",
+    title: "Aksi",
     key: "actions",
     width: "25%",
     align: "center",
@@ -89,11 +89,11 @@ const handleSearch = () => {
 
 const handleDelete = async (record) => {
   Modal.confirm({
-    title: "Are you sure you want to delete this user?",
-    content: "This action cannot be undone.",
-    okText: "Yes",
+    title: "Apakah Anda yakin ingin menghapus data ini?",
+    content: "Tindakan ini tidak dapat dibatalkan.",
+    okText: "Ya",
     okType: "danger",
-    cancelText: "No",
+    cancelText: "Tidak",
     async onOk() {
       try {
         const res = await axios.delete(route("app.regions.destroy", record.id));
@@ -159,14 +159,17 @@ onMounted(() => {
         row-key="id"
       >
         <!-- Username column with icon -->
-        <template #bodyCell="{ column, record }">
+        <template #bodyCell="{ column, record, index }">
           <template v-if="column.key === 'username'">
             <span>
               <UserOutlined class="mr-2" />
               {{ record.username }}
             </span>
           </template>
-
+          <template v-else-if="column.key === 'id'">
+            {{ (pagination.current - 1) * pagination.pageSize + index + 1 }}
+            <!-- Use index here -->
+          </template>
           <!-- Actions column -->
           <template v-else-if="column.key === 'actions'">
             <a-space>
@@ -174,7 +177,7 @@ onMounted(() => {
                 <template #icon>
                   <EditOutlined />
                 </template>
-                Edit
+                Ubah
               </a-button>
               <a-button
                 type="primary"
@@ -186,7 +189,7 @@ onMounted(() => {
                 <template #icon>
                   <DeleteOutlined />
                 </template>
-                Delete
+                Hapus
               </a-button>
             </a-space>
           </template>
