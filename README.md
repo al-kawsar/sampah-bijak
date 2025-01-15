@@ -61,3 +61,9 @@ composer run dev
 Akses aplikasi di [http://localhost:8000](http://localhost:8000).
 
 ---
+
+Akun
+- warga = citizen@sampahbijak.id:password
+- petugas = officer@sampahbijak.id:password
+- pemerintah = government@sampahbijak.id:password
+- admin = admin@gmail.com:password
