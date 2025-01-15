@@ -86,7 +86,7 @@ class EventSeeder extends Seeder
                 'description' => 'Pelajari cara mengelola sampah rumah tangga dengan bijak, dari pemisahan sampah hingga daur ulang yang ramah lingkungan.',
         'date' => now()->addDays(10), // contoh tanggal 10 hari lagi
         'location' => 'Auditorium Pusat Lingkungan, Jl. Alam Raya No. 15',
-        'organizer_id' => $organizerId, // ID pengguna pengorganisir
+        'organizer_id' => User::inRandomOrder()->first()->id, // ID pengguna pengorganisir
         'capacity' => 100,
         'created_at' => now(),
         'updated_at' => now(),
@@ -98,7 +98,7 @@ class EventSeeder extends Seeder
         'description' => 'Ayo bergabung dalam kampanye untuk mengurangi sampah plastik dengan tips dan trik praktis serta pembuatan produk daur ulang.',
         'date' => now()->addMonth(), // contoh tanggal 1 bulan lagi
         'location' => 'Taman Kota Hijau, Jl. Cinta Alam No. 8',
-        'organizer_id' => $organizerId,
+        'organizer_id' => User::inRandomOrder()->first()->id,
         'capacity' => 200,
         'created_at' => now(),
         'updated_at' => now(),
@@ -110,7 +110,7 @@ class EventSeeder extends Seeder
         'description' => 'Ikuti seminar untuk mengetahui cara-cara efektif mendaur ulang sampah elektronik yang ramah lingkungan dan mengurangi polusi.',
         'date' => now()->addWeeks(2), // contoh tanggal 2 minggu lagi
         'location' => 'Gedung Serba Guna, Jl. Teknologi No. 10',
-        'organizer_id' => $organizerId,
+        'organizer_id' => User::inRandomOrder()->first()->id,
         'capacity' => 150,
         'created_at' => now(),
         'updated_at' => now(),

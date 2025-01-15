@@ -116,8 +116,7 @@ class LearningModuleSeeder extends Seeder
                 <p>Konsistensi adalah kunci keberhasilan dalam membangun komunitas yang peduli terhadap pengelolaan sampah. Langkah-langkah kecil yang dilakukan secara terus-menerus akan memberikan dampak besar dalam jangka panjang. Oleh karena itu, penting untuk tetap menjaga komitmen dan melibatkan sebanyak mungkin pihak dalam perjalanan ini.</p>
 
                 <p>Pada akhirnya, perubahan dimulai dari langkah kecil yang konsisten. Bersama-sama, kita dapat menciptakan perubahan besar melalui langkah-langkah kolaboratif yang berkelanjutan. Jadilah bagian dari gerakan untuk membangun lingkungan yang lebih bersih, sehat, dan berkelanjutan. Setiap tindakan Anda akan menjadi inspirasi bagi orang lain.</p>
-                '
-
+                ',
                 'thumbnail' => 'https://waste4change.com/blog/wp-content/uploads/9D13FE3C-FBBC-4FD9-B5F2-CA92F569673B-1-350x233.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -166,7 +165,6 @@ class LearningModuleSeeder extends Seeder
     ],
     // Anda bisa menambahkan lebih banyak modul tentang topik ini sesuai kebutuhan
 ]);
-
 
     }
 }

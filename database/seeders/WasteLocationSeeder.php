@@ -3,6 +3,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\WasteLocation;
+use Illuminate\Support\Facades\DB;
+
 
 class WasteLocationSeeder extends Seeder
 {
@@ -105,6 +107,6 @@ class WasteLocationSeeder extends Seeder
     ];
 
     DB::table('waste_locations')->insert($locations);
-}
+
 }
 }

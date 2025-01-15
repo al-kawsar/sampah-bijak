@@ -4,9 +4,14 @@
 
 ## **Tech Stack**
 
+- node: 22.12.0
+- npm: 10.9.0
+- php: 8.2.17
+- composer: 2.7.6
+
 | **Komponen**   | **Teknologi**        |
 |----------------|----------------------|
-| **Backend**    | Laravel              |
+| **Backend**    | Laravel 11              |
 | **Frontend**   | Vue.js (dengan Inertia.js) |
 | **Database**   | MySQL                |
 | **Versioning** | Git                  |
@@ -50,7 +55,6 @@ php artisan migrate --seed
 ### **5. Jalankan Aplikasi**
 #### Backend & Frontend
 ```bash
-npm run build
 composer run dev
 ```
 

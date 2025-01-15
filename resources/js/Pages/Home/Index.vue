@@ -175,101 +175,101 @@
 
 </Header>
 
+
 <Content>
-      <!-- Hero Section <section class="hero">
-        <div class="hero-content">
-          <h1 class="hero-title">Kelola Sampah untuk Masa Depan Hijau</h1>
-          <p class="hero-description">
-            Platform digital untuk mengelola sampah dengan bijak dan berkelanjutan
-          </p>
-          <Button type="primary" size="large" class="hero-button">
-            Mulai Sekarang
-          </Button>
-        </div>
-      </section>
-
-
-      <!-- Learning Modules -->
-      <section class="learning-modules-section">
-        <div class="container">
-          <h2 class="section-title">Modul Pembelajaran</h2>
-          <div class="modules-grid">
-            <Card
-            v-for="module in learningModules"
-            :key="module.id"
-            hoverable
-            :loading="loading.learnings"
-            class="learning-card"
-            >
-            <template #cover>
-              <img :src="module.thumbnail" :alt="module.title" />
-            </template>
-            <Card.Meta :title="module.title" :description="module.description" />
-            <div class="module-button">
-              <Button type="link" @click="$inertia.visit(`/learning/${module.id}`)">
-                Pelajari Selengkapnya
-              </Button>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </section>
-
-    <!-- Events Section -->
-    <section class="events-section">
-      <div class="container">
-        <h2 class="section-title">Event Mendatang</h2>
-        <div class="events-grid">
-          <Card
-          v-for="event in events"
-          :key="event.id"
-          hoverable
-          :loading="loading.events"
-          class="event-card"
-          >
-          <template #cover>
-            <img :src="event.thumbnail_url" :alt="event.title" />
-          </template>
-          <h3 class="event-title">{{ event.title }}</h3>
-          <p class="event-description">{{ event.description }}</p>
-          <div class="event-details">
-            <CalendarOutlined class="event-icon" />
-            {{ new Date(event.date).toLocaleDateString('id-ID', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            }) }}
-          </div>
-          <div class="event-location">
-            <EnvironmentOutlined class="event-icon" />
-            {{ event.location }}
-          </div>
-          <div class="event-capacity">
-            <TeamOutlined class="event-icon" />
-            Kapasitas: {{ event.capacity }} peserta
-          </div>
-          <Button type="primary" @click="$inertia.visit(`/events/${event.id}`)">
-            Daftar Sekarang
-          </Button>
-        </Card>
-      </div>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Kelola Sampah dengan Bijak untuk Masa Depan yang Lebih Baik</h1>
+      <p>
+        Platform digital yang menghubungkan masyarakat, pengepul, dan industri daur
+        ulang untuk menciptakan ekosistem pengelolaan sampah yang berkelanjutan.
+      </p>
+      <Button type="primary" size="large">Mulai Sekarang</Button>
     </div>
   </section>
 
-  <!-- FAQ Section -->
-  <section class="faq-section">
+
+  <!-- Learning Modules -->
+  <section class="learning-modules-section">
     <div class="container">
-      <h2 class="section-title">FAQ</h2>
-      <Collapse class="faq-collapse" :loading="loading.faqs">
-        <Panel
-        v-for="faq in faqs"
-        :key="faq.id"
-        :header="faq.question"
+      <h2 class="section-title">Modul Pembelajaran</h2>
+      <div class="modules-grid">
+        <Card
+        v-for="module in learningModules"
+        :key="module.id"
+        hoverable
+        :loading="loading.learnings"
+        class="learning-card"
         >
-        <p>{{ faq.answer }}</p>
-      </Panel>
-    </Collapse>
+        <template #cover>
+          <img :src="module.thumbnail" :alt="module.title" />
+        </template>
+        <Card.Meta :title="module.title" :description="module.description" />
+        <div class="module-button">
+          <Button type="link" @click="$inertia.visit(`/learning/${module.id}`)">
+            Pelajari Selengkapnya
+          </Button>
+        </div>
+      </Card>
+    </div>
   </div>
+</section>
+
+<!-- Events Section -->
+<section class="events-section">
+  <div class="container">
+    <h2 class="section-title">Event Mendatang</h2>
+    <div class="events-grid">
+      <Card
+      v-for="event in events"
+      :key="event.id"
+      hoverable
+      :loading="loading.events"
+      class="event-card"
+      >
+      <template #cover>
+        <img :src="event.thumbnail_url" :alt="event.title" />
+      </template>
+      <h3 class="event-title">{{ event.title }}</h3>
+      <p class="event-description">{{ event.description }}</p>
+      <div class="event-details">
+        <CalendarOutlined class="event-icon" />
+        {{ new Date(event.date).toLocaleDateString('id-ID', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }) }}
+      </div>
+      <div class="event-location">
+        <EnvironmentOutlined class="event-icon" />
+        {{ event.location }}
+      </div>
+      <div class="event-capacity">
+        <TeamOutlined class="event-icon" />
+        Kapasitas: {{ event.capacity }} peserta
+      </div>
+      <Button type="primary" @click="$inertia.visit(`/events/${event.id}`)">
+        Daftar Sekarang
+      </Button>
+    </Card>
+  </div>
+</div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+  <div class="container">
+    <h2 class="section-title">FAQ</h2>
+    <Collapse class="faq-collapse" :loading="loading.faqs">
+      <Panel
+      v-for="faq in faqs"
+      :key="faq.id"
+      :header="faq.question"
+      >
+      <p>{{ faq.answer }}</p>
+    </Panel>
+  </Collapse>
+</div>
 </section>
 
 <!-- Contact Section -->
@@ -456,5 +456,26 @@
 
   .social-link:hover {
     color: #4CAF50;
+  }
+  .hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://duitin.id/images/header/1684920800503-blog27-jamurpemecahplastik(1920x1080).jpg");
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 0 20px;
+  }
+  .hero-content {
+    max-width: 800px;
+  }
+  .hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: #fff;
   }
 </style>
