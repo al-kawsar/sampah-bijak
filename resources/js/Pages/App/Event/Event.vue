@@ -61,7 +61,7 @@
   };
 
   const handleRegister = (eventId) => {
-    router.get(`/events/${eventId}`);
+    router.get(route('app.events.show',eventId));
   };
 
   const formatDate = (date) => {
