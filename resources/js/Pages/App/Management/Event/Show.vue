@@ -1,6 +1,6 @@
 <script setup>
   import AppLayout from "@/Layouts/AppLayout.vue";
-  import { ref, onMounted } from "vue";
+  import { ref, onMounted, h } from "vue";
   import { Card, Row, Col, Tag, Avatar, Button, Statistic } from "ant-design-vue";
   import {
     CalendarOutlined,
@@ -26,19 +26,31 @@
   const map = ref(null);
   const mapContainer = ref(null);
 
-  onMounted(() => {
-// Initialize map
-  map.value = L.map(mapContainer.value).setView([0, 0], 13); // Default view, will be updated
+  onMounted(async () => {
+  // Initialize map
+    map.value = L.map(mapContainer.value);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-  }).addTo(map.value);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map.value);
 
-  // You would need to geocode the location string to get coordinates
-  // For demo purposes, using default coordinates
-  const marker = L.marker([0, 0]).addTo(map.value);
-  marker.bindPopup(props.event.location).openPopup();
-});
+    try {
+    // Use a geocoding service to convert address to coordinates
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(props.event.location)}`
+        );
+      const data = await response.json();
+
+      if (data && data[0]) {
+        const { lat, lon } = data[0];
+        map.value.setView([lat, lon], 13);
+        const marker = L.marker([lat, lon]).addTo(map.value);
+        marker.bindPopup(props.event.location).openPopup();
+      }
+    } catch (error) {
+      console.error('Error geocoding address:', error);
+    }
+  });
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('id-ID', {
@@ -51,11 +63,9 @@
     });
   };
 
-  const getParticipantStatus = () => {
-  // This would come from your actual data/API
-  const registered = 45; // Example number
-  return Math.round((registered / props.event.capacity) * 100);
-};
+  const getRegistrationStatus = () => {
+    return props.event.registered_count >= props.event.capacity ? 'Full' : 'Open';
+  };
 </script>
 
 <template>
@@ -92,6 +102,16 @@
         </p>
       </Card>
 
+      <!-- Organizer Information -->
+      <Card title="Organizer" class="mb-6" v-if="event.organizer">
+        <div class="flex items-center gap-4">
+          <Avatar :size="64" :src="event.organizer.avatar_url" />
+          <div>
+            <h3 class="text-lg font-semibold">{{ event.organizer.name }}</h3>
+          </div>
+        </div>
+      </Card>
+
       <!-- Map -->
       <Card title="Location" class="mb-6">
         <div ref="mapContainer" class="h-96 rounded-lg"></div>
@@ -113,12 +133,17 @@
       <Col :span="12">
       <Statistic
       title="Registration"
-      :value="getParticipantStatus()"
+      :value="event.participant_percentage"
       suffix="%"
       :prefix="h(UserOutlined)"
       />
     </Col>
   </Row>
+  <div class="mt-4 text-center">
+    <Tag :color="event.registered_count >= event.capacity ? 'red' : 'green'">
+      {{ getRegistrationStatus() }}
+    </Tag>
+  </div>
 </Card>
 
 <!-- Date & Time -->
@@ -140,8 +165,14 @@
 </Card>
 
 <!-- Registration Button -->
-<Button type="primary" block size="large" class="h-12">
-  Register for Event
+<Button
+type="primary"
+block
+size="large"
+class="h-12"
+:disabled="event.registered_count >= event.capacity"
+>
+{{ event.registered_count >= event.capacity ? 'Event Full' : 'Register for Event' }}
 </Button>
 </Col>
 </Row>
@@ -149,17 +180,16 @@
 </template>
 
 <style scoped>
-/* Add these to your CSS */
-:deep(.ant-card-head-title) {
-  font-size: 1.25rem;
-  font-weight: 600;
-}
+  :deep(.ant-card-head-title) {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
 
-:deep(.ant-statistic-title) {
-  font-size: 1rem;
-}
+  :deep(.ant-statistic-title) {
+    font-size: 1rem;
+  }
 
-:deep(.ant-statistic-content) {
-  font-size: 1.5rem;
-}
+  :deep(.ant-statistic-content) {
+    font-size: 1.5rem;
+  }
 </style>
