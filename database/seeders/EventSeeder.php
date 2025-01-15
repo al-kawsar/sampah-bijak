@@ -82,7 +82,7 @@ class EventSeeder extends Seeder
             [
                 'id' => \Str::uuid(),
                 'title' => 'Workshop Pengelolaan Sampah Rumah Tangga',
-                'thumbnail_url' => 'https://example.com/images/workshop.jpg',
+                'thumbnail_url' => 'https://waste4change.com/blog/wp-content/uploads/9D13FE3C-FBBC-4FD9-B5F2-CA92F569673B-1-350x233.jpg',
                 'description' => 'Pelajari cara mengelola sampah rumah tangga dengan bijak, dari pemisahan sampah hingga daur ulang yang ramah lingkungan.',
         'date' => now()->addDays(10), // contoh tanggal 10 hari lagi
         'location' => 'Auditorium Pusat Lingkungan, Jl. Alam Raya No. 15',
@@ -94,7 +94,7 @@ class EventSeeder extends Seeder
     [
         'id' => \Str::uuid(),
         'title' => 'Kampanye Pengurangan Sampah Plastik',
-        'thumbnail_url' => 'https://example.com/images/campaign.jpg',
+        'thumbnail_url' => 'https://waste4change.com/blog/wp-content/uploads/9D13FE3C-FBBC-4FD9-B5F2-CA92F569673B-1-350x233.jpg',
         'description' => 'Ayo bergabung dalam kampanye untuk mengurangi sampah plastik dengan tips dan trik praktis serta pembuatan produk daur ulang.',
         'date' => now()->addMonth(), // contoh tanggal 1 bulan lagi
         'location' => 'Taman Kota Hijau, Jl. Cinta Alam No. 8',
@@ -106,7 +106,7 @@ class EventSeeder extends Seeder
     [
         'id' => \Str::uuid(),
         'title' => 'Seminar Daur Ulang Sampah Elektronik',
-        'thumbnail_url' => 'https://example.com/images/seminar.jpg',
+        'thumbnail_url' => 'https://waste4change.com/blog/wp-content/uploads/9D13FE3C-FBBC-4FD9-B5F2-CA92F569673B-1-350x233.jpg',
         'description' => 'Ikuti seminar untuk mengetahui cara-cara efektif mendaur ulang sampah elektronik yang ramah lingkungan dan mengurangi polusi.',
         'date' => now()->addWeeks(2), // contoh tanggal 2 minggu lagi
         'location' => 'Gedung Serba Guna, Jl. Teknologi No. 10',
