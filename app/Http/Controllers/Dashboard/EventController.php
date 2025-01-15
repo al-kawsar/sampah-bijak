@@ -60,7 +60,12 @@ class EventController extends Controller
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
             }
 
-            $data = Event::query()->select('id','title','description','date','location','thumbnail_url','capacity','organizer_id')->orderBy('updated_at', 'desc')->paginate($limit);
+            $data = Event::with('organizer:id,username')->select('id','title','description','date','location','thumbnail_url','capacity', 'organizer_id')->orderBy('updated_at', 'desc')->paginate($limit);
+            $data->getCollection()->transform(function ($event) {
+                $event->organizer_id = $event->organizer ? $event->organizer->username : null;
+                return $event;
+            });
+
 
             return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
         } catch (\Exception $e) {
@@ -99,48 +104,61 @@ class EventController extends Controller
      */
     public function show(Event $id)
     {
-        return Inertia::render("App/Management/Event/Show", [
-            "event" => $id
-        ]);
-    }
+      $event = Event::with(['organizer', 'eventParticipants'])
+      ->withCount([
+        'eventParticipants',
+        'eventParticipants as registered_count' => function($query) {
+            $query->where('status', 'registered');
+        }
+    ])
+      ->findOrFail($id->id);
 
-    public function create()
-    {
-        return Inertia::render("App/Management/Event/Create");
-    }
+      return Inertia::render("App/Management/Event/Show", [
+        "event" => array_merge($event->toArray(), [
+            'participant_percentage' => $event->capacity > 0
+            ? round(($event->registered_count / $event->capacity) * 100)
+            : 0,
+        ])
+    ]);
+  }
+
+  public function create()
+  {
+    return Inertia::render("App/Management/Event/Create");
+}
 
 
-    public function update(UpdateRequest $request, Event $id)
-    {
-        try {
-            $payload = $request->validated();
+public function update(UpdateRequest $request, Event $id)
+{
+    try {
+        $payload = $request->validated();
 
-            if ($request->hasFile('thumbnail_url')) {
-                if ($id->thumbnail_url) {
-                    $this->fileService->deleteFileByPath($id->thumbnail_url);
-                }
-
-                $requestFile = $request->file('thumbnail_url');
-                $file = $this->fileService->uploadFile($requestFile);
-                $payload['thumbnail_url'] = $file->full_path;
+        if ($request->hasFile('thumbnail_url')) {
+            if ($id->thumbnail_url) {
+                $this->fileService->deleteFileByPath($id->thumbnail_url);
             }
 
-            Cache::flush();
-            $id->update($payload);
-
-            return $this->success(message: 'Success Update Data');
-        } catch (\Exception $e) {
-            Log::error('Error updating event:', ['error' => $e->getMessage()]);
-            return $this->internalServerError($e->getMessage(), 500);
+            $requestFile = $request->file('thumbnail_url');
+            $file = $this->fileService->uploadFile($requestFile);
+            $payload['thumbnail_url'] = $file->full_path;
         }
-    }
 
-    public function edit(Event $id)
-    {
-        return Inertia::render("App/Management/Event/Edit", [
-            "event" => $id
-        ]);
+        Cache::flush();
+        $id->update($payload);
+
+        return $this->success(message: 'Success Update Data');
+    } catch (\Exception $e) {
+        Log::error('Error updating event:', ['error' => $e->getMessage()]);
+        return $this->internalServerError($e->getMessage(), 500);
     }
+}
+
+public function edit(Event $id)
+{
+    return Inertia::render("App/Management/Event/Edit", [
+        "event" => $id
+    ]);
+}
 
 
     /**
