@@ -13,6 +13,9 @@
     FilterOutlined
   } from '@ant-design/icons-vue';
 
+  import { message} from "ant-design-vue";
+
+
   defineOptions({
     layout: AppLayout,
   });
@@ -48,7 +51,7 @@
   };
 
 // Methods
-  const fetchEvents = async () => {
+  const fetchEventParticipants = async () => {
     loading.value = true;
     try {
       const response = await axios.get(route('app.event-participants.api'), {
@@ -69,9 +72,9 @@
 
   const handleTabChange = (tabKey) => {
     activeTab.value = tabKey;
-    filterStatus.value = tabKey === 'all' ? [] : [tabKey];
+    filterStatus.value = tabKey === 'all' ? '' : tabKey;
     pagination.value.current = 1;
-    fetchEvents();
+    fetchEventParticipants();
   };
 
   const formatDate = (date) => {
@@ -91,7 +94,7 @@
   };
 
   onMounted(() => {
-    fetchEvents();
+    fetchEventParticipants();
   });
 </script>
 
@@ -217,7 +220,7 @@
         v-model:current="pagination.current"
         :total="pagination.total"
         :pageSize="pagination.pageSize"
-        @change="fetchEvents"
+        @change="fetchEventParticipants"
         show-quick-jumper
         show-size-changer
         :pageSizeOptions="['10', '20', '30', '40']"
