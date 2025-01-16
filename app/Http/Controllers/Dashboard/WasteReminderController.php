@@ -40,18 +40,26 @@ class WasteReminderController extends Controller
                     ->paginate($limit);
                 });
 
-                return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
+                $resultsData = $results->items();
+                $modifiedResults = collect($resultsData)->map(function ($item) {
+                $item->is_active = $item->is_active == 1 ? true : false;  // Ubah ke boolean
+                return $item;
+            });
+
+                return $this->success($modifiedResults, "Get Search Data", pagination: $this->getPaginationData($results));
 
             }
-
-            if ($type === "search")
+            if ($type === "search") {
                 $data = WasteReminder::query()->where('user_id', '=', auth()->id())->orderBy('id', 'desc')->paginate($limit);
-            // if ($type === "filter")
-            //     $data = WasteReminder::limit($limit)->get(['id', 'name']);
 
+                $resultsData = $data->items();
+                $modifiedResults = collect($resultsData)->map(function ($item) {
+                $item->is_active = $item->is_active == 1 ? true : false;  // Ubah ke boolean
+                return $item;
+            });
+            }
 
-            return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
-
+            return $this->success($modifiedResults, "Get All Data", pagination: $this->getPaginationData($data));
         } catch (\Exception $e) {
             return $this->internalServerError('Failed to retrieve data', 500, $e->getMessage());
         }
@@ -92,7 +100,7 @@ class WasteReminderController extends Controller
     {
         try {
             $payload = $request->validated();
-
+            $payload['is_active'] = $payload['is_active'] == true ? 1 : 0;
             $id->updateOrFail($payload);
 
             return $this->success(message: 'Success Update Data');
