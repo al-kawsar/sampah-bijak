@@ -8,6 +8,9 @@
     EnvironmentOutlined,
     UserOutlined,
   } from '@ant-design/icons-vue';
+  import axios from 'axios';
+  import { message } from "ant-design-vue";
+
 
   defineOptions({
     layout: AppLayout,
@@ -49,23 +52,24 @@
   const handleSubmit = async () => {
     loading.value = true;
     error.value = '';
+    success.value = false;
 
     try {
-      await router.post(route('app.event-participants.store'), form.value, {
-        onSuccess: () => {
-          success.value = true;
-          setTimeout(() => {
-            router.visit(route('app.event-participants.index', props.event.id));
-          }, 2000);
-        },
-        onError: (errors) => {
-          error.value = Object.values(errors)[0];
-        },
-      });
+      const response = await axios.post(route('app.event-participants.store'), form.value);
+
+      message.success(response.data.message);
+      router.get(route('app.event-participants.index'));
+    } catch (err) {
+      if (err.response && err.response.data.errors) {
+        message.error(Object.values(err.response.data.errors)[0]);
+      } else {
+        message.error('Terjadi kesalahan. Silakan coba lagi.');
+      }
     } finally {
       loading.value = false;
     }
   };
+
 </script>
 
 <template>
