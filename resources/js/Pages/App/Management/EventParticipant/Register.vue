@@ -45,6 +45,7 @@
     });
   };
 
+
   const handleSubmit = async () => {
     loading.value = true;
     error.value = '';
@@ -54,7 +55,7 @@
         onSuccess: () => {
           success.value = true;
           setTimeout(() => {
-            router.visit(route('app.event-participants.show', props.event.id));
+            router.visit(route('app.event-participants.index', props.event.id));
           }, 2000);
         },
         onError: (errors) => {
@@ -95,7 +96,6 @@
         <Form
         layout="vertical"
         class="mt-6"
-        @finish="handleSubmit"
         >
         <!-- User Info Preview -->
         <div class="bg-gray-50 p-4 rounded-lg mb-6">
@@ -138,6 +138,7 @@
           :loading="loading"
           :disabled="success"
           block
+          @click="handleSubmit"
           size="large"
           >
           Konfirmasi Pendaftaran
