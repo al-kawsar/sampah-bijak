@@ -43,8 +43,7 @@
   };
 
   const handleRegisterEvent = (eventId) => {
-    // router.get(route('app.event-participants.create', eventId));
-    router.get(`/event-participants/${eventId}`)
+    router.get(route('app.event-participants.register',eventId));
   }
 
   onMounted(async () => {
