@@ -51,7 +51,7 @@
   const fetchEvents = async () => {
     loading.value = true;
     try {
-      const response = await axios.get('/api/events', {
+      const response = await axios.get(route('app.event-participants.api'), {
         params: {
           status: filterStatus.value,
           page: pagination.value.current,
