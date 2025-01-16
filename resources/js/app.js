@@ -4,6 +4,7 @@ import { ZiggyVue } from "ziggy-js";
 import { Link, Head } from "@inertiajs/vue3";
 import Antd, { message } from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
+import "leaflet/dist/leaflet.css";
 import "@/bootstrap.js";
 
 import { Bar } from 'vue-chartjs';
