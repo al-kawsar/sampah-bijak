@@ -41,13 +41,14 @@ class EventParticipantController extends Controller
             $query = $request->input('search');
             $limit = $request->input('limit', 10);
             $type = $request->input('type', 'search');
+            $status = $request->input('status', '');
 
             $query = $request->input('search');
-            if ($query !== "") {
+            if ($query) {
                 $cacheKey = self::PAGE . '_search:' . md5($query);
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
-                    return EventParticipant::where('user_id', '=', auth()->id())
+                    return EventParticipant::with(['event','user'])->where('user_id', '=', auth()->id())
                     ->orderBy('id', 'desc')
                     ->paginate($limit);
                 });
@@ -55,8 +56,15 @@ class EventParticipantController extends Controller
                 return $this->success($results->items(), "Get Search Data", pagination: $this->getPaginationData($results));
             }
 
-            if ($type === "search")
-                $data = EventParticipant::query()->orderBy('id', 'desc')->paginate($limit);
+            if ($type === "search"){
+                $data = EventParticipant::with(['event','user'])->where('user_id', '=', auth()->id());
+            }
+
+            if($status){
+                $data = $data->where('status', $status);
+            }
+
+            $data = $data->orderBy('id', 'desc')->paginate($limit);
 
             return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
         } catch (\Exception $e) {
@@ -71,7 +79,9 @@ class EventParticipantController extends Controller
         try {
             $payload = $request->validated();
 
-            $payload['organizer_id'] = auth()->id();
+            $payload['user_id'] = auth()->id();
+            $payload['status'] = 'registered';
+            $payload['registered_at'] = now();
 
             EventParticipant::create($payload);
 
