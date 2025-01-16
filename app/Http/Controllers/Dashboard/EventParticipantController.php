@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Models\EventParticipant;
+use App\Models\Event;
 use Inertia\Inertia;
 use App\Traits\ApiResponse;
 use App\Traits\PaginatesData;
@@ -84,7 +85,7 @@ class EventParticipantController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(EventParticipant $id)
+    public function show(Event $id)
     {
         return 'anjay';
         return Inertia::render("App/Event/EventParticipant/Register");
@@ -96,15 +97,18 @@ class EventParticipantController extends Controller
             "event" => $id
         ]);
     }
-    public function create()
+    public function create($eventId)
     {
-        return Inertia::render("App/Event/EventParticipant/Register");
+        $event = Event::findOrFail($eventId);
+
+        $user = User::with('profile')->where('id', auth()->id())->first();
+
+        return Inertia::render("App/Management/EventParticipant/Register",[
+            'event' => $event,
+            'user' => $user
+        ]);
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateRequest $request, EventParticipant $id)
     {
         try {
