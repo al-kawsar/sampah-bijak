@@ -414,68 +414,69 @@
 
   .stats-grid, .modules-grid, .events-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
-  }
+/*    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));*/
+grid-template-columns: repeat(3, 1fr);
+gap: 16px;
+}
 
-  .section-title {
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 32px;
-  }
+.section-title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 32px;
+}
 
-  .footer {
-    background-color: #333;
-    color: white;
-    padding: 48px 0;
-  }
+.footer {
+  background-color: #333;
+  color: white;
+  padding: 48px 0;
+}
 
-  .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-  }
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
 
-  .footer-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
+.footer-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
 
-  .social-media-links {
-    display: flex;
-    gap: 16px;
-  }
+.social-media-links {
+  display: flex;
+  gap: 16px;
+}
 
-  .social-link {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s;
-  }
+.social-link {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
 
-  .social-link:hover {
-    color: #4CAF50;
-  }
-  .hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://duitin.id/images/header/1684920800503-blog27-jamurpemecahplastik(1920x1080).jpg");
-    background-size: cover;
-    background-position: center;
-    color: #fff;
-    text-align: center;
-    padding: 0 20px;
-  }
-  .hero-content {
-    max-width: 800px;
-  }
-  .hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
-    color: #fff;
-  }
+.social-link:hover {
+  color: #4CAF50;
+}
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  url("https://duitin.id/images/header/1684920800503-blog27-jamurpemecahplastik(1920x1080).jpg");
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  text-align: center;
+  padding: 0 20px;
+}
+.hero-content {
+  max-width: 800px;
+}
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
 </style>
