@@ -8,7 +8,7 @@ use App\Http\Requests\Dashboard\EventParticipant\UpdateRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
-use App\Models\Event;
+use App\Models\EventParticipant;
 use Inertia\Inertia;
 use App\Traits\ApiResponse;
 use App\Traits\PaginatesData;
@@ -17,7 +17,7 @@ class EventParticipantController extends Controller
 {
     use ApiResponse, PaginatesData;
 
-    const PAGE = 'events';
+    const PAGE = 'event_participant';
 
     public function index()
     {
@@ -46,9 +46,7 @@ class EventParticipantController extends Controller
                 $cacheKey = self::PAGE . '_search:' . md5($query);
 
                 $results = Cache::remember($cacheKey, 60, function () use ($query, $limit) {
-                    return Event::where('title', 'LIKE', "%$query%")
-                    ->orWhere('description', 'LIKE', "%$query%")
-                    ->orWhere('location', 'LIKE', "%$query%")
+                    return EventParticipant::where('user_id', '=', auth()->id())
                     ->orderBy('id', 'desc')
                     ->paginate($limit);
                 });
@@ -57,7 +55,7 @@ class EventParticipantController extends Controller
             }
 
             if ($type === "search")
-                $data = Event::query()->orderBy('id', 'desc')->paginate($limit);
+                $data = EventParticipant::query()->orderBy('id', 'desc')->paginate($limit);
 
             return $this->success($data->items(), "Get All Data", pagination: $this->getPaginationData($data));
         } catch (\Exception $e) {
@@ -74,7 +72,7 @@ class EventParticipantController extends Controller
 
             $payload['organizer_id'] = auth()->id();
 
-            Event::create($payload);
+            EventParticipant::create($payload);
 
             return $this->success(message: 'Success Create Data');
 
@@ -86,13 +84,13 @@ class EventParticipantController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Event $id)
+    public function show(EventParticipant $id)
     {
-        return Inertia::render("App/Management/Event/Show", [
-            "event" => $id
-        ]);
+        return 'anjay';
+        return Inertia::render("App/Event/EventParticipant/Register");
+
     }
-    public function edit(Event $id)
+    public function edit(EventParticipant $id)
     {
         return Inertia::render("App/Management/Event/Edit", [
             "event" => $id
@@ -100,20 +98,21 @@ class EventParticipantController extends Controller
     }
     public function create()
     {
-        return Inertia::render("App/Management/Event/Create");
+        return Inertia::render("App/Event/EventParticipant/Register");
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Event $id)
+    public function update(UpdateRequest $request, EventParticipant $id)
     {
         try {
             $payload = $request->validated();
 
             $payload['organizer_id'] = auth()->id();
 
+            Cache::flush();
             $id->updateOrFail($payload);
 
             return $this->success(message: 'Success Update Data');
@@ -126,7 +125,7 @@ class EventParticipantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $id)
+    public function destroy(EventParticipant $id)
     {
         try {
             if ($id->delete()) {
@@ -141,12 +140,12 @@ class EventParticipantController extends Controller
         }
     }
 
-    public function EventParticipantPage()
-    {
-        return Inertia::render('App/Event/EventParticipant');
-    }
     public function EventManagement()
     {
         return Inertia::render('App/Citizen/Dashboard');
+    }
+    public function EventParticipantPage()
+    {
+        return Inertia::render('App/Event/EventParticipant');
     }
 }
