@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
         return [
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string|max:1000',
-            'reminder_time' => 'sometimes|required|date_format:H:i',
+            'reminder_time' => 'sometimes|required',
             'frequency' => 'sometimes|required|in:daily,weekly,monthly',
             'is_active' => 'sometimes|required|boolean',
         ];
