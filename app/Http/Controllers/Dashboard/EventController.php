@@ -50,6 +50,9 @@ class EventController extends Controller
             $limit = $request->input('limit', 10);
             $type = $request->input('type', 'search');
             $query = $request->input('search');
+
+            $role = auth()->user()->role->name;
+
             if ($type === "search" && $query !== null) {
 
                 $results = Event::where('title', 'LIKE', "%$query%")
