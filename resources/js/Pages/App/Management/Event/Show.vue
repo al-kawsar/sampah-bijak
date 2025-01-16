@@ -1,6 +1,7 @@
 <script setup>
   import AppLayout from "@/Layouts/AppLayout.vue";
   import { ref, onMounted, h } from "vue";
+  import { router } from "@inertiajs/vue3";
   import { Card, Row, Col, Tag, Avatar, Button, Statistic } from "ant-design-vue";
   import {
     CalendarOutlined,
@@ -40,6 +41,11 @@
   const getRegistrationStatus = () => {
     return props.event.registered_count >= props.event.capacity ? 'Full' : 'Open';
   };
+
+  const handleRegisterEvent = (eventId) => {
+    // router.get(route('app.event-participants.create', eventId));
+    router.get(`/event-participants/${eventId}`)
+  }
 
   onMounted(async () => {
   // Initialize map
@@ -172,6 +178,7 @@ block
 size="large"
 class="register-button"
 :disabled="event.registered_count >= event.capacity"
+@click="handleRegisterEvent(event.id)"
 >
 {{ event.registered_count >= event.capacity ? 'Acara Penuh' : 'Daftar Acara' }}
 </Button>
