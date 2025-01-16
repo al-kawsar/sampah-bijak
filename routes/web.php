@@ -64,7 +64,9 @@ Route::name('app.')->middleware('auth')->group(function () {
     ->parameters(['events' => 'id:id'])
     ->except(['update']);
 
-    Route::resource('event-participants', EventParticipantController::class)->parameters(['event-participants' => 'id:id']);
+    Route::get('event-participants/{id:id}/register', [EventParticipantController::class, 'create'])->name('event-participants.register');
+    Route::resource('event-participants', EventParticipantController::class)
+    ->parameters(['event-participants' => 'id:id']);
 
     Route::resource('learnings', LearningModuleController::class)->parameters(['learnings' => 'id:id']);
     Route::resource('notifications', NotificationController::class)->parameters(['notifications' => 'id:id']);
