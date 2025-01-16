@@ -22,10 +22,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'event_id' => 'required|exists:events,id',
-            'status' => 'required|in:registered,attended,cancelled',
-            'registered_at' => 'required|date|after_or_equal:today',
         ];
     }
 
