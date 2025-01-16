@@ -104,7 +104,7 @@ class EventController extends Controller
      */
     public function show(Event $id)
     {
-      $event = Event::with(['organizer', 'eventParticipants'])
+      $event = Event::with(['organizer', 'eventParticipants', 'organizer.profile'])
       ->withCount([
         'eventParticipants',
         'eventParticipants as registered_count' => function($query) {
