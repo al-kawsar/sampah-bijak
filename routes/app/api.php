@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\LearningModuleController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\PickupScheduleController;
 use App\Http\Controllers\Dashboard\RegionController;
+use App\Http\Controllers\Dashboard\EventParticipantController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\UserProfileController;
@@ -29,6 +30,7 @@ Route::prefix('api')->group(function () {
 
     // * DASHBOARD API
     Route::get('/events', [EventController::class, 'getData'])->withoutMiddleware('auth')->name('events.api');
+    Route::get('/event-participants', [EventParticipantController::class, 'getData'])->name('event-participants.api');
     Route::put('/events/{id:id}', [EventController::class, 'update'])->name('events.update');
 
     // EVENT participant
