@@ -51,7 +51,6 @@ class EventController extends Controller
             $type = $request->input('type', 'search');
             $query = $request->input('search');
 
-            $role = auth()->user()->role->name;
 
             if ($type === "search" && $query !== null) {
 
