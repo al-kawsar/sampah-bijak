@@ -26,6 +26,21 @@
   const map = ref(null);
   const mapContainer = ref(null);
 
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('id-ID', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const getRegistrationStatus = () => {
+    return props.event.registered_count >= props.event.capacity ? 'Full' : 'Open';
+  };
+
   onMounted(async () => {
   // Initialize map
     map.value = L.map(mapContainer.value);
@@ -52,20 +67,6 @@
     }
   });
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('id-ID', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const getRegistrationStatus = () => {
-    return props.event.registered_count >= props.event.capacity ? 'Full' : 'Open';
-  };
 </script>
 <template>
   <div class="container">
@@ -104,9 +105,9 @@
       <!-- Informasi Penyelenggara -->
       <Card title="Penyelenggara" class="content-card" v-if="event.organizer">
         <div class="organizer-info">
-          <Avatar :size="64" :src="event.organizer.avatar_url" />
+          <Avatar :size="64" :src="event.organizer.profile.profile_picture" />
           <div>
-            <h3 class="organizer-name">{{ event.organizer.name }}</h3>
+            <h3 class="organizer-name">{{ event.organizer.profile.full_name }}</h3>
           </div>
         </div>
       </Card>
@@ -114,6 +115,7 @@
       <!-- Peta -->
       <Card title="Lokasi" class="content-card">
         {{ event.location }}
+        <div ref="mapContainer" class="map-container"></div>
       </Card>
     </Col>
 
@@ -278,5 +280,12 @@ class="register-button"
 .register-button {
   height: 48px;
   font-size: 16px;
+}
+.map-container {
+  height: 384px; /* Setara dengan kelas Tailwind `h-96` */
+  width: 100%; /* Lebar penuh */
+  border-radius: 12px; /* Setara dengan kelas Tailwind `rounded-lg` */
+  overflow: hidden; /* Untuk memastikan konten yang melampaui area peta tidak terlihat */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Tambahan efek shadow opsional */
 }
 </style>
